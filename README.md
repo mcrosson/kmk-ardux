@@ -18,3 +18,11 @@ cd /opt/kmk_firmware
 python util/compile.py
 cp ~.compiled/kmk~ folder -> mcu
 ```
+
+## Misc
+
+- Press reset button when NeoPixel starts to blink yellow during early boot.
+- Format storage via `REPL`: https://docs.circuitpython.org/en/latest/docs/troubleshooting.html
+- [MicroPython Docs](https://docs.micropython.org/en/latest/index.html)
+- [CircuitPython Docs](https://docs.circuitpython.org/en/latest/docs/environment.html#environment-variables)
+
