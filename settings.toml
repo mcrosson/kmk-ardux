@@ -1,5 +1,5 @@
 CIRCUITPY_BLE_NAME = "ARDUX [L|R] [board]"
-ARDUX_KMK_DEBUGGING = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
+#ARDUX_KMK_DEBUGGING = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
 ARDUX_KMK_USB_DISK_ALWAYS = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
 ARDUX_SIZE = "[STANDARD|BIG|40%]"
 ARDUX_HAND = "[LEFT|RIGHT]"
