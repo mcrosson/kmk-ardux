@@ -3,7 +3,7 @@ import os
 
 #####
 # Main keyboard object
-from kb import ArduxKeyboard
+from ardux.kb import ArduxKeyboard
 ardux_keyboard = ArduxKeyboard()
 
 #####
