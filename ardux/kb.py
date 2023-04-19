@@ -159,6 +159,10 @@ class ArduxKeyboard(KMKKeyboard):
         self.combo_module.combos.append(ArduxChord((KC.UP, KC.LEFT), KC.DELETE, ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
         self.combo_module.combos.append(ArduxChord((KC.END, KC.UP, KC.HOME, KC.PGDOWN), KC.TAB, ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
         self.combo_module.combos.append(ArduxChord((KC.RIGHT, KC.DOWN, KC.LEFT, KC.PGDOWN), KC.SPACE, ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
+        self.combo_module.combos.append(ArduxChord((KC.RIGHT, KC.PGUP), KC.OS(KC.LCTRL), ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
+        self.combo_module.combos.append(ArduxChord((KC.DOWN, KC.PGUP), KC.OS(KC.LGUI), ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
+        self.combo_module.combos.append(ArduxChord((KC.LEFT, KC.PGUP), KC.OS(KC.LALT), ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
+        self.combo_module.combos.append(ArduxChord((KC.RIGHT, KC.UP, KC.HOME, KC.PGUP), KC.OS(KC.LSHIFT), ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
         
         #####
         # std - number
