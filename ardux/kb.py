@@ -12,6 +12,7 @@ from ardux.chord import ArduxChord
 from kmk.modules.holdtap import HoldTap
 from kmk.modules.layers import Layers
 from kmk.modules.combos import Combos, Chord
+from kmk.modules.oneshot import OneShot
 from kmk.modules.mouse_keys import MouseKeys
 from kmk.extensions.media_keys import MediaKeys
 
@@ -62,6 +63,9 @@ class ArduxKeyboard(KMKKeyboard):
         # Combos
         self.combo_module = Combos()
         self.modules.append(self.combo_module)
+
+        # One Shot
+        self.modules.append(OneShot())
         
         # Setup kemap as last step
         self.setup_keymap()
@@ -108,6 +112,11 @@ class ArduxKeyboard(KMKKeyboard):
         # layers
         self.combo_module.combos.append(ArduxChord((KC.R, KC.I, self.base_e_symbols), KC.TO(LAYER_ID_NAVIGATION), ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
         self.combo_module.combos.append(ArduxChord((KC.T, KC.Y, self.base_a_parens), KC.TO(LAYER_ID_MOUSE), ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        # mods
+        self.combo_module.combos.append(ArduxChord((self.base_s_numbers, self.base_e_symbols), KC.OS(KC.LCTRL), ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.Y, self.base_s_numbers), KC.OS(KC.LGUI), ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.I, self.base_s_numbers), KC.OS(KC.LALT), ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_s_numbers, KC.R, KC.T, self.base_e_symbols), KC.OS(KC.LSHIFT), ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
         # control sequences
         self.combo_module.combos.append(ArduxChord((self.base_o_custom, KC.I, KC.Y, self.base_e_symbols), KC.SPACE, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
         self.combo_module.combos.append(ArduxChord((self.base_a_parens,  KC.R, self.base_o_custom), KC.ESCAPE, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
