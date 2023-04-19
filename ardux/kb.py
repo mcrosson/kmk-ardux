@@ -86,7 +86,7 @@ class ArduxKeyboard(KMKKeyboard):
             [KC.TRANSPARENT, KC.N3, KC.N2, KC.N1,
              KC.NO, KC.N6, KC.N5, KC.N4],
             # std - left - navigation
-            [KC.PGUP, KC.END, KC.UP, KC.HOME,
+            [KC.PGUP, KC.HOME, KC.UP, KC.END,
              KC.PGDOWN, KC.LEFT, KC.DOWN, KC.RIGHT],
             # std - left - symbols
             [KC.GRAVE, KC.SCOLON, KC.BSLASH, KC.EXCLAIM,
@@ -95,16 +95,22 @@ class ArduxKeyboard(KMKKeyboard):
             [KC.NO, KC.AUDIO_VOL_UP, KC.INSERT, KC.AUDIO_MUTE,
              KC.TRANSPARENT, KC.AUDIO_VOL_DOWN, KC.PSCREEN, KC.RSHIFT],
             # std - left - mouse
-            [KC.MW_DOWN, KC.MB_RMB, KC.MS_UP, KC.MB_LMB,
-             KC.MW_DOWN, KC.MS_LEFT, KC.MS_DOWN, KC.MS_RIGHT]
+            [KC.MW_UP, KC.MB_RMB, KC.MS_UP, KC.MB_LMB,
+             KC.MW_DOWN, KC.MS_LEFT, KC.MS_DN, KC.MS_RIGHT]
         ]
 
     # Define combos for ardux
     def setup_combos(self):
         self.combo_module.combos = []
-        
-        combo_enter = ArduxChord((self.base_a_parens, self.base_e_symbols), KC.ENTER, ardux_keyboard=[self], layers=[0])
-        self.combo_module.combos.append(combo_enter)
-        
-        combo_space = ArduxChord((self.base_o_custom, KC.I, KC.Y, self.base_e_symbols), KC.SPACE, ardux_keyboard=[self], layers=[1])
-        self.combo_module.combos.append(combo_space)
+
+        # std - base
+        self.combo_module.combos.append(ArduxChord((KC.R, KC.I, self.base_e_symbols), KC.TO(LAYER_ID_NAVIGATION), ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.T, KC.Y, self.base_a_parens), KC.TO(LAYER_ID_MOUSE), ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, self.base_e_symbols), KC.ENTER, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_o_custom, KC.I, KC.Y, self.base_e_symbols), KC.SPACE, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+
+        # std - nav
+        self.combo_module.combos.append(ArduxChord((KC.UP, KC.LEFT, KC.RIGHT), KC.TO(LAYER_ID_BASE), ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
+
+        # std - mouse
+        self.combo_module.combos.append(ArduxChord((KC.MB_RMB, KC.MS_DN, KC.MB_LMB), KC.TO(LAYER_ID_BASE), ardux_keyboard=[self], layers=[LAYER_ID_MOUSE]))
