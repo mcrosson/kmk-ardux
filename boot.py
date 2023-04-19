@@ -11,7 +11,6 @@ import usb_cdc
 import usb_hid
 
 from kmk.quickpin.pro_micro.kb2040 import pinout as pins
-from kb import KMKKeyboard
 from usb_hid import Device
 
 # Print env vars if debugging enabled
@@ -28,14 +27,12 @@ if os.getenv('ARDUX_KMK_DEBUGGING'):
 else:
     print('debugging disabled')
 
-# Enable use w/ BIOS
-usb_hid.enable((Device.KEYBOARD, Device.MOUSE), boot_device=1)
-
 # If this key is held during boot, don't run the code which hides the storage and disables serial
 # bottom row, index finger key / bottom row pinky key
 key_1 = digitalio.DigitalInOut(pins[12])
 key_2 = digitalio.DigitalInOut(pins[15])
 
+# Configure gpio for boot
 key_1.switch_to_input(pull=digitalio.Pull.UP)
 key_2.switch_to_input(pull=digitalio.Pull.UP)
 
@@ -43,6 +40,7 @@ key_2.switch_to_input(pull=digitalio.Pull.UP)
 key_1_val = not (key_1.value)
 key_2_val = not (key_2.value)
 
+# Check for key hold and disable any dangerous features
 if not (key_1_val or key_2_val) and not os.getenv('ARDUX_KMK_DEBUGGING'):
     if not os.getenv('ARDUX_KMK_USB_DISK_ALWAYS'):
         storage.disable_usb_drive()
@@ -51,5 +49,9 @@ if not (key_1_val or key_2_val) and not os.getenv('ARDUX_KMK_DEBUGGING'):
 # Deinit pins so they can be setup per the kmk keymap post-boot
 key_1.deinit()
 key_2.deinit()
+
+# Enable use w/ BIOS
+
+usb_hid.enable(boot_device=1)
 
 print('END boot.py')
