@@ -115,6 +115,7 @@ class ArduxKeyboard(KMKKeyboard):
         self.combo_module.combos.append(ArduxChord((KC.R,  KC.I), KC.DELETE, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
         self.combo_module.combos.append(ArduxChord((self.base_a_parens,  KC.R,  KC.T,  self.base_o_custom), KC.TAB, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
         self.combo_module.combos.append(ArduxChord((self.base_a_parens, self.base_e_symbols), KC.ENTER, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.Y, KC.I, self.base_o_custom), KC.CAPSLOCK, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
         # symbols
         self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.Y), KC.DOT, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
         self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.I), KC.COMMA, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
