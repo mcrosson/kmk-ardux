@@ -1,5 +1,11 @@
 This code is experimental.
 
+## NeoPixel
+
+Put [this](https://raw.githubusercontent.com/adafruit/Adafruit_CircuitPython_NeoPixel/main/neopixel.py) in `lib` folder of CircuitPython disk (compile to `mpy` for nice!nano.
+
+## Compile mpy files for nice!nano kmk
+
 ``` bash
 docker run -v /scratch/kmk_firmware:/opt/kmk_firmware --rm -it --entrypoint=/bin/bash python:latest
 cd /opt
