@@ -103,14 +103,67 @@ class ArduxKeyboard(KMKKeyboard):
     def setup_combos(self):
         self.combo_module.combos = []
 
+        #####
         # std - base
+        # layers
         self.combo_module.combos.append(ArduxChord((KC.R, KC.I, self.base_e_symbols), KC.TO(LAYER_ID_NAVIGATION), ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
         self.combo_module.combos.append(ArduxChord((KC.T, KC.Y, self.base_a_parens), KC.TO(LAYER_ID_MOUSE), ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
-        self.combo_module.combos.append(ArduxChord((self.base_a_parens, self.base_e_symbols), KC.ENTER, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        # control sequences
         self.combo_module.combos.append(ArduxChord((self.base_o_custom, KC.I, KC.Y, self.base_e_symbols), KC.SPACE, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
-
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens,  KC.R, self.base_o_custom), KC.ESCAPE, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_e_symbols,  KC.R), KC.BSPACE, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.R,  KC.I), KC.DELETE, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens,  KC.R,  KC.T,  self.base_o_custom), KC.TAB, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, self.base_e_symbols), KC.ENTER, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        # symbols
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.Y), KC.DOT, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.I), KC.COMMA, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, self.base_o_custom), KC.SLASH, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.Y, KC.I), KC.QUOTE, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        # ansi
+        self.combo_module.combos.append(ArduxChord((self.base_s_numbers, self.base_o_custom), KC.B, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_s_numbers,  KC.Y), KC.C, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.I,  self.base_o_custom), KC.N, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens,  KC.R), KC.F, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.R, KC.T), KC.G, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.Y, KC.I), KC.U, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_s_numbers, KC.I), KC.H, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.R, self.base_s_numbers), KC.V, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.T, self.base_s_numbers), KC.J, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, self.base_s_numbers), KC.W, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.Y, self.base_o_custom), KC.K, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.Y, KC.I, self.base_o_custom), KC.M, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.R, KC.T), KC.D, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_s_numbers, KC.I, self.base_o_custom), KC.P, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.T,  self.base_s_numbers), KC.Q, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((KC.R, KC.T, self.base_s_numbers), KC.X, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_s_numbers, KC.Y, KC.I), KC.L, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.R, KC.T, self.base_s_numbers), KC.Z, ardux_keyboard=[self], layers=[LAYER_ID_BASE]))
+        
+        #####
         # std - nav
         self.combo_module.combos.append(ArduxChord((KC.UP, KC.LEFT, KC.RIGHT), KC.TO(LAYER_ID_BASE), ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
-
+        self.combo_module.combos.append(ArduxChord((KC.END, KC.RIGHT), KC.ENTER, ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
+        self.combo_module.combos.append(ArduxChord((KC.END, KC.UP, KC.PGDOWN), KC.ESCAPE, ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
+        self.combo_module.combos.append(ArduxChord((KC.RIGHT, KC.UP), KC.BSPACE, ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
+        self.combo_module.combos.append(ArduxChord((KC.UP, KC.LEFT), KC.DELETE, ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
+        self.combo_module.combos.append(ArduxChord((KC.END, KC.UP, KC.HOME, KC.PGDOWN), KC.TAB, ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
+        self.combo_module.combos.append(ArduxChord((KC.RIGHT, KC.DOWN, KC.LEFT, KC.PGDOWN), KC.SPACE, ardux_keyboard=[self], layers=[LAYER_ID_NAVIGATION]))
+        
+        #####
+        # std - number
+        self.combo_module.combos.append(ArduxChord((KC.N1, KC.N2), KC.N7, ardux_keyboard=[self], layers=[LAYER_ID_NUMBERS]))
+        self.combo_module.combos.append(ArduxChord((KC.N2, KC.N3), KC.N8, ardux_keyboard=[self], layers=[LAYER_ID_NUMBERS]))
+        self.combo_module.combos.append(ArduxChord((KC.N4, KC.N5), KC.N9, ardux_keyboard=[self], layers=[LAYER_ID_NUMBERS]))
+        self.combo_module.combos.append(ArduxChord((KC.N5, KC.N6), KC.N0, ardux_keyboard=[self], layers=[LAYER_ID_NUMBERS]))
+        self.combo_module.combos.append(ArduxChord((KC.N1, KC.N5), KC.DOT, ardux_keyboard=[self], layers=[LAYER_ID_NUMBERS]))
+        self.combo_module.combos.append(ArduxChord((KC.N1, KC.N6), KC.COMMA, ardux_keyboard=[self], layers=[LAYER_ID_NUMBERS]))
+        self.combo_module.combos.append(ArduxChord((KC.N1, KC.N4), KC.ENTER, ardux_keyboard=[self], layers=[LAYER_ID_NUMBERS]))
+        self.combo_module.combos.append(ArduxChord((KC.N2, KC.N6), KC.DELETE, ardux_keyboard=[self], layers=[LAYER_ID_NUMBERS]))
+        self.combo_module.combos.append(ArduxChord((KC.N4, KC.N2), KC.BSPACE, ardux_keyboard=[self], layers=[LAYER_ID_NUMBERS]))
+        
+        #####
         # std - mouse
         self.combo_module.combos.append(ArduxChord((KC.MB_RMB, KC.MS_DN, KC.MB_LMB), KC.TO(LAYER_ID_BASE), ardux_keyboard=[self], layers=[LAYER_ID_MOUSE]))
+
+
