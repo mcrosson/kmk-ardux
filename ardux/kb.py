@@ -8,8 +8,11 @@ from kmk.scanners.keypad import KeysScanner
 
 from kmk.modules.layers import Layers
 from kmk.modules.combos import Combos, Chord
-from ardux.chord import ArduxChord
+from kmk.modules.mouse_keys import MouseKeys
 
+from kmk.extensions.media_keys import MediaKeys
+
+from ardux.chord import ArduxChord
 from kmk.keys import KC
 
 class ArduxKeyboard(KMKKeyboard):
@@ -19,9 +22,28 @@ class ArduxKeyboard(KMKKeyboard):
     ]
 
     keymap = [
+        # std - left - base
         [KC.S, KC.T, KC.R, KC.A,
-         KC.O, KC.I, KC.Y, KC.E]
-        ]
+         KC.O, KC.I, KC.Y, KC.E],
+        # std - left - parenthesis
+        [KC.RIGHT_CURLY_BRACE, KC.LEFT_PAREN, KC.RIGHT_PAREN, KC.TRANSPARENT,
+         KC.LEFT_CURLY_BRACE, KC.LBRACKET, KC.RBRACKET, KC.NO],
+        # std - left - number
+        [KC.TRANSPARENT, KC.N3, KC.N2, KC.N1,
+         KC.NO, KC.N6, KC.N5, KC.N4],
+        # std - left - navigation
+        [KC.PGUP, KC.END, KC.UP, KC.HOME,
+         KC.PGDOWN, KC.LEFT, KC.DOWN, KC.RIGHT],
+        # std - left - symbols
+        [KC.GRAVE, KC.SCOLON, KC.BSLASH, KC.EXCLAIM,
+         KC.EQUAL, KC.MINUS, KC.QUESTION, KC.TRANSPARENT],
+        # std - left - custom
+        [KC.NO, KC.AUDIO_VOL_UP, KC.INSERT, KC.AUDIO_MUTE,
+         KC.TRANSPARENT, KC.AUDIO_VOL_DOWN, KC.PSCREEN, KC.RSHIFT],
+        # std - left - mouse
+        [KC.MW_DOWN, KC.MB_RMB, KC.MS_UP, KC.MB_LMB,
+         KC.MW_DOWN, KC.MS_LEFT, KC.MS_DOWN, KC.MS_RIGHT]
+    ]
 
     # Init / constructor / setup
     def __init__(self):
@@ -38,6 +60,12 @@ class ArduxKeyboard(KMKKeyboard):
 
         # Layers
         self.modules.append(Layers())
+
+        # Media Keys
+        self.extensions.append(MediaKeys())
+
+        # Mouse Keys
+        self.modules.append(MouseKeys())
 
         # Combos
         self.combo_module = Combos()
