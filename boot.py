@@ -4,15 +4,6 @@ print('START boot.py')
 
 import os
 
-# Enable use w/ BIOS
-if os.getenv('ARDUX_KMK_DEBUGGING'):
-    print('START bios hid enable')
-import usb_hid
-from usb_hid import Device
-usb_hid.enable((Device.KEYBOARD, Device.MOUSE), boot_device=1)
-if os.getenv('ARDUX_KMK_DEBUGGING'):
-    print('END bios hid enable')
-
 # Print env vars if debugging enabled
 if os.getenv('ARDUX_KMK_DEBUGGING'):
     print('debugging enabled')
@@ -27,7 +18,7 @@ if os.getenv('ARDUX_KMK_DEBUGGING'):
 else:
     print('debugging disabled')
 
-# If this key is held during boot, don't run the code which hides the storage and disables serial
+# If this/these key(s) is/are held during boot, don't run the code which hides the storage and disables serial
 # bottom row, index finger key / bottom row pinky key
 import digitalio
 from kmk.quickpin.pro_micro.kb2040 import pinout as pins
@@ -38,17 +29,26 @@ key_2 = digitalio.DigitalInOut(pins[15])
 key_1.switch_to_input(pull=digitalio.Pull.UP)
 key_2.switch_to_input(pull=digitalio.Pull.UP)
 
-# Pull up means 'active low' so invert pin values for positive logic below
+# Pull up means 'active low' so invert pin values for less convoluted logic below
 key_1_val = not (key_1.value)
 key_2_val = not (key_2.value)
 
-# Check for key hold and disable any dangerous features
+# Check for key hold and disable any dangerous features if not held
 if not (key_1_val or key_2_val) and not os.getenv('ARDUX_KMK_DEBUGGING'):
+    # dont expose storage by default
     if not os.getenv('ARDUX_KMK_USB_DISK_ALWAYS'):
         import storage
         storage.disable_usb_drive()
+    # disable usb cdc stuff thats only useful when debugging
     import usb_cdc
     usb_cdc.disable() # Equivalent to usb_cdc.enable(console=False, data=False)
+
+    # Enable use w/ bios when not debugging (serial device from debug messes things up)
+    # this only works if *both* cdc and storage are disabled above ; add added logic to avoid crash on boot
+    import usb_hid
+    from usb_hid import Device
+    if not os.getenv('ARDUX_KMK_USB_DISK_ALWAYS'):
+        usb_hid.enable((Device.KEYBOARD,), boot_device=1)
 
 # Deinit pins so they can be setup per the kmk keymap post-boot
 key_1.deinit()
