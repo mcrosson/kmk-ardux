@@ -62,6 +62,7 @@ class ArduxKeyboard(KMKKeyboard):
 
         # Combos
         self.combo_module = Combos()
+        self.combo_module.timeout = 175
         self.modules.append(self.combo_module)
 
         # One Shot
