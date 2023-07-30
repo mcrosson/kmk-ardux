@@ -193,4 +193,7 @@ class _ArduxKeyboard(KMKKeyboard):
         self.combo_module.combos.append(Chord((self.base_o_custom, KC.Y, self.base_e_symbols), KC.NO))
         self.combo_module.combos.append(Chord((self.base_a_parens, KC.R,  self.base_s_numbers), KC.NO))
         self.combo_module.combos.append(Chord((self.base_a_parens, KC.T), KC.NO))
+        self.combo_module.combos.append(Chord((self.base_o_custom, KC.T), KC.NO))
+        self.combo_module.combos.append(Chord((self.base_o_custom, self.base_s_numbers), KC.NO))
+        self.combo_module.combos.append(Chord((self.base_s_numbers, KC.Y), KC.NO))
 
