@@ -2,13 +2,9 @@
 import os
 
 import board
-from kmk.quickpin.pro_micro.kb2040 import pinout as pins
-
 from kmk.kmk_keyboard import KMKKeyboard
-from kmk.scanners.keypad import KeysScanner
-
 from kmk.keys import KC
-from ardux.chord import ArduxChord
+from ardux.chord import ArduxChord # FIXME: Need to fix ArduxChord / sort layer filters for combos
 
 from kmk.modules.layers import Layers
 from kmk.modules.combos import Combos, Chord
@@ -26,7 +22,7 @@ LAYER_ID_SYMBOLS = 4
 LAYER_ID_CUSTOM = 5
 LAYER_ID_MOUSE = 6
 
-class ArduxKeyboard(KMKKeyboard):
+class _ArduxKeyboard(KMKKeyboard):
     coord_mapping = [
         0,  1,  2,  3,
         4,  5,  6,  7,
@@ -34,9 +30,10 @@ class ArduxKeyboard(KMKKeyboard):
 
     keymap = []
 
+    # Switch to ABC python3 stl abstract class methods
+    #     See https://stackoverflow.com/a/4382964 for detail (the accepted answer)
     def setup_physical_config(self):
-        # Direct wire & matrix setup
-        self.matrix = KeysScanner([pins[16], pins[17], pins[18], pins[19], pins[12], pins[13], pins[14], pins[15]])
+        raise NotImplementedError('Please define the physical config for your keyboard')
 
     # Init / constructor / setup
     def __init__(self):
@@ -190,5 +187,3 @@ class ArduxKeyboard(KMKKeyboard):
         #####
         # std - mouse
         self.combo_module.combos.append(Chord((KC.MB_RMB, KC.MS_DN, KC.MB_LMB), KC.TO(LAYER_ID_BASE)))
-
-

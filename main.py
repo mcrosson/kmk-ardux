@@ -3,8 +3,8 @@ import os
 
 #####
 # Main keyboard object
-from ardux.kb import ArduxKeyboard
-ardux_keyboard = ArduxKeyboard()
+from ardux.hardware.thepaintbrush import ThePaintbrushArduxKeyboard
+ardux_keyboard = ThePaintbrushArduxKeyboard()
 
 #####
 # NeoPixel on kb2040 (tune accordingly / remove if different mcu)
