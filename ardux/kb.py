@@ -34,6 +34,10 @@ class ArduxKeyboard(KMKKeyboard):
 
     keymap = []
 
+    def setup_physical_config(self):
+        # Direct wire & matrix setup
+        self.matrix = KeysScanner([pins[16], pins[17], pins[18], pins[19], pins[12], pins[13], pins[14], pins[15]])
+
     # Init / constructor / setup
     def __init__(self):
         # Enable debugging if appropriate
@@ -44,8 +48,8 @@ class ArduxKeyboard(KMKKeyboard):
         self.modules = []
         self.extensions = []
 
-        # Direct wire & matrix setup
-        self.matrix = KeysScanner([pins[16], pins[17], pins[18], pins[19], pins[12], pins[13], pins[14], pins[15]])
+        # Call setup hook -- matrix/direct wire config
+        self.setup_physical_config()
 
         # Layers
         self.layers_module = Layers()
@@ -55,7 +59,6 @@ class ArduxKeyboard(KMKKeyboard):
 
         # Combos
         self.combo_module = Combos()
-        self.combo_module.timeout = 250
         self.combo_module.prefer_hold = True
         self.combo_module.tap_interrupted = False
         self.modules.append(self.combo_module)
