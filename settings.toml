@@ -1,6 +1,12 @@
-CIRCUITPY_BLE_NAME = "ARDUX [L|R] [board]"
-#ARDUX_KMK_DEBUGGING = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
-ARDUX_KMK_USB_DISK_ALWAYS = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
+# General setup & config
 ARDUX_SIZE = "[STANDARD|BIG|40%]"
 ARDUX_HAND = "[LEFT|RIGHT]"
-ARDUX_BOARD = "[NAME_OF_BOARD]"
+ARDUX_BOARD = "see ardux/hardware for options"
+#ARDUX_RGB_KB2040 = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
+
+# Name shown via bluetooth
+CIRCUITPY_BLE_NAME = "ARDUX [L|R] [board]"
+
+# Debugging / developmbit
+#ARDUX_KMK_DEBUGGING = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
+ARDUX_KMK_USB_DISK_ALWAYS = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
