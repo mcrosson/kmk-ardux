@@ -187,3 +187,10 @@ class _ArduxKeyboard(KMKKeyboard):
         #####
         # std - mouse
         self.combo_module.combos.append(Chord((KC.MB_RMB, KC.MS_DN, KC.MB_LMB), KC.TO(LAYER_ID_BASE)))
+
+        # work around a bug with combo handling and layer selections in kmk
+        #    these combos should be removed if/when kmk stops 'going hayware' or 'getting stuck' when these key combos are pressed when the below are not in the code
+        self.combo_module.combos.append(Chord((self.base_o_custom, KC.Y, self.base_e_symbols), KC.NO))
+        self.combo_module.combos.append(Chord((self.base_a_parens, KC.R,  self.base_s_numbers), KC.NO))
+        self.combo_module.combos.append(Chord((self.base_a_parens, KC.T), KC.NO))
+
