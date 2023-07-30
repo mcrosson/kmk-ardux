@@ -1,5 +1,6 @@
-from ardux.kb import _ArduxKeyboard
+import board
 from kmk.scanners import DiodeOrientation
+from ardux.kb import _ArduxKeyboard
 
 # Quagboard Implementation
 class QuagboardArduxKeyboard(_ArduxKeyboard):
