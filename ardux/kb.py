@@ -4,7 +4,6 @@ import os
 import board
 from kmk.kmk_keyboard import KMKKeyboard
 from kmk.keys import KC
-from ardux.chord import ArduxChord # FIXME: Need to fix ArduxChord / sort layer filters for combos
 
 from kmk.modules.layers import Layers
 from kmk.modules.combos import Combos, Chord
