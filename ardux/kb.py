@@ -9,7 +9,7 @@ from ardux.chord import ArduxChord # FIXME: Need to fix ArduxChord / sort layer 
 from kmk.modules.layers import Layers
 from kmk.modules.combos import Combos, Chord
 from kmk.modules.holdtap import HoldTap
-from kmk.modules.oneshot import OneShot
+from kmk.modules.sticky_keys import StickyKeys
 from kmk.modules.mouse_keys import MouseKeys
 from kmk.extensions.media_keys import MediaKeys
 
@@ -37,6 +37,9 @@ class _ArduxKeyboard(KMKKeyboard):
 
     # Init / constructor / setup
     def __init__(self):
+        # Run main KMKKeyboard class init before doing any of our own customizations
+        super().__init__()
+        
         # Enable debugging if appropriate
         if os.getenv('ARDUX_KMK_DEBUGGING'):
             self.debug_enabled = True
@@ -67,7 +70,7 @@ class _ArduxKeyboard(KMKKeyboard):
         self.modules.append(self.holdtap_module)
 
         # One Shot
-        self.modules.append(OneShot())
+        self.modules.append(StickyKeys())
 
         # Media Keys
         self.extensions.append(MediaKeys())
@@ -121,10 +124,10 @@ class _ArduxKeyboard(KMKKeyboard):
         self.combo_module.combos.append(Chord((KC.R, KC.I, self.base_e_symbols), KC.TO(LAYER_ID_NAVIGATION)))
         self.combo_module.combos.append(Chord((KC.T, KC.Y, self.base_a_parens), KC.TO(LAYER_ID_MOUSE)))
         # mods
-        self.combo_module.combos.append(Chord((self.base_s_numbers, self.base_e_symbols), KC.OS(KC.LCTRL)))
-        self.combo_module.combos.append(Chord((KC.Y, self.base_s_numbers), KC.OS(KC.LGUI)))
-        self.combo_module.combos.append(Chord((KC.I, self.base_s_numbers), KC.OS(KC.LALT)))
-        self.combo_module.combos.append(Chord((self.base_s_numbers, KC.R, KC.T, self.base_e_symbols), KC.OS(KC.LSHIFT)))
+        self.combo_module.combos.append(Chord((self.base_s_numbers, self.base_e_symbols), KC.SK(KC.LCTRL)))
+        self.combo_module.combos.append(Chord((KC.Y, self.base_s_numbers), KC.SK(KC.LGUI)))
+        self.combo_module.combos.append(Chord((KC.I, self.base_s_numbers), KC.SK(KC.LALT)))
+        self.combo_module.combos.append(Chord((self.base_s_numbers, KC.R, KC.T, self.base_e_symbols), KC.SK(KC.LSHIFT)))
         # control sequences
         self.combo_module.combos.append(Chord((self.base_o_custom, KC.I, KC.Y, self.base_e_symbols), KC.SPACE))
         self.combo_module.combos.append(Chord((self.base_a_parens,  KC.R, self.base_o_custom), KC.ESCAPE))
@@ -167,10 +170,10 @@ class _ArduxKeyboard(KMKKeyboard):
         self.combo_module.combos.append(Chord((KC.UP, KC.LEFT), KC.DELETE))
         self.combo_module.combos.append(Chord((KC.END, KC.UP, KC.HOME, KC.PGDOWN), KC.TAB))
         self.combo_module.combos.append(Chord((KC.RIGHT, KC.DOWN, KC.LEFT, KC.PGDOWN), KC.SPACE))
-        self.combo_module.combos.append(Chord((KC.RIGHT, KC.PGUP), KC.OS(KC.LCTRL)))
-        self.combo_module.combos.append(Chord((KC.DOWN, KC.PGUP), KC.OS(KC.LGUI)))
-        self.combo_module.combos.append(Chord((KC.LEFT, KC.PGUP), KC.OS(KC.LALT)))
-        self.combo_module.combos.append(Chord((KC.RIGHT, KC.UP, KC.HOME, KC.PGUP), KC.OS(KC.LSHIFT)))
+        self.combo_module.combos.append(Chord((KC.RIGHT, KC.PGUP), KC.SK(KC.LCTRL)))
+        self.combo_module.combos.append(Chord((KC.DOWN, KC.PGUP), KC.SK(KC.LGUI)))
+        self.combo_module.combos.append(Chord((KC.LEFT, KC.PGUP), KC.SK(KC.LALT)))
+        self.combo_module.combos.append(Chord((KC.RIGHT, KC.UP, KC.HOME, KC.PGUP), KC.SK(KC.LSHIFT)))
         
         #####
         # std - number
