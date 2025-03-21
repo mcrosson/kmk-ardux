@@ -2,6 +2,7 @@
 ARDUX_SIZE = "[STANDARD|BIG|40%]"
 ARDUX_HAND = "[LEFT|RIGHT]"
 ARDUX_BOARD = "see ardux/hardware for options"
+ARDUX_MCU = "[kb2040|sparkfun_promicro_rp2040]"
 #ARDUX_RGB_KB2040 = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
 
 # Name shown via bluetooth

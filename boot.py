@@ -14,6 +14,7 @@ if os.getenv('ARDUX_KMK_DEBUGGING'):
     print('ARDUX_SIZE:', os.getenv('ARDUX_SIZE'))
     print('ARDUX_HAND:', os.getenv('ARDUX_HAND'))
     print('ARDUX_BOARD:', os.getenv('ARDUX_BOARD'))
+    print('ARDUX_MCU:', os.getenv('ARDUX_MCU'))
     print('END env')
 else:
     print('debugging disabled')
@@ -21,7 +22,16 @@ else:
 # If this/these key(s) is/are held during boot, don't run the code which hides the storage and disables serial
 # bottom row, index finger key / bottom row pinky key
 import digitalio
-from kmk.quickpin.pro_micro.kb2040 import pinout as pins
+
+mcu = os.getenv('ARDUX_MCU')
+if 'kb2040' == mcu:
+    from kmk.quickpin.pro_micro.kb2040 import pinout as pins
+elif 'sparkfun_promicro_rp2040' == mcu:
+    from kmk.quickpin.pro_micro.sparkfun_promicro_rp2040 import pinout as pins
+else:
+    print('Unsupported mcu: ', os.getenv('ARDUX_MCU'))
+    raise 'Unsupported mcu:'+ os.getenv('ARDUX_MCU')
+
 key_1 = digitalio.DigitalInOut(pins[12])
 key_2 = digitalio.DigitalInOut(pins[15])
 

@@ -1,6 +1,16 @@
 from ardux.kb import _ArduxKeyboard
 from kmk.scanners.keypad import KeysScanner
-from kmk.quickpin.pro_micro.kb2040 import pinout as pins
+
+import os
+mcu = os.getenv('ARDUX_MCU')
+if 'kb2040' == mcu:
+    from kmk.quickpin.pro_micro.kb2040 import pinout as pins
+elif 'sparkfun_promicro_rp2040' == mcu:
+    from kmk.quickpin.pro_micro.sparkfun_promicro_rp2040 import pinout as pins
+else:
+    print('Unsupported mcu: ', os.getenv('ARDUX_MCU'))
+    raise 'Unsupported mcu:'+ os.getenv('ARDUX_MCU')
+
 
 # ThePaintbrush Implementation
 class ThePaintbrushArduxKeyboard(_ArduxKeyboard):
