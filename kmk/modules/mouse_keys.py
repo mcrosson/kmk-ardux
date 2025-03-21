@@ -1,110 +1,61 @@
-from kmk.keys import AX, make_key, make_mouse_key
-from kmk.kmktime import PeriodicTimer
+from micropython import const
+
+from kmk.keys import AX, MouseKey, make_key
 from kmk.modules import Module
+from kmk.scheduler import cancel_task, create_task
+
+_MU = const(0x01)
+_MD = const(0x02)
+_ML = const(0x04)
+_MR = const(0x08)
+_WU = const(0x10)
+_WD = const(0x20)
+_WL = const(0x40)
+_WR = const(0x80)
 
 
 class MouseKeys(Module):
-    def __init__(self):
-        self._nav_key_activated = 0
-        self._up_activated = False
-        self._down_activated = False
-        self._left_activated = False
-        self._right_activated = False
-        self._mw_up_activated = False
-        self._mw_down_activated = False
-        self.max_speed = 10
-        self.acc_interval = 10  # Delta ms to apply acceleration
-        self.move_step = 1
+    def __init__(self, max_speed=10, acc_interval=20, move_step=1):
+        self._movement = 0
+        self.max_speed = max_speed
+        self.acc_interval = acc_interval
+        self.move_step = move_step
 
-        make_mouse_key(
-            names=('MB_LMB',),
-            code=1,
+        codes = (
+            (0x01, ('MB_LMB',)),
+            (0x02, ('MB_RMB',)),
+            (0x04, ('MB_MMB',)),
+            (0x08, ('MB_BTN4',)),
+            (0x10, ('MB_BTN5',)),
         )
-        make_mouse_key(
-            names=('MB_MMB',),
-            code=4,
+        for code, names in codes:
+            make_key(names=names, constructor=MouseKey, code=code)
+
+        keys = (
+            (('MW_UP',), self._mw_up_press, self._mw_up_release),
+            (('MW_DOWN', 'MW_DN'), self._mw_down_press, self._mw_down_release),
+            (('MW_LEFT', 'MW_LT'), self._mw_left_press, self._mw_left_release),
+            (('MW_RIGHT', 'MW_RT'), self._mw_right_press, self._mw_right_release),
+            (('MS_UP',), self._ms_up_press, self._ms_up_release),
+            (('MS_DOWN', 'MS_DN'), self._ms_down_press, self._ms_down_release),
+            (('MS_LEFT', 'MS_LT'), self._ms_left_press, self._ms_left_release),
+            (('MS_RIGHT', 'MS_RT'), self._ms_right_press, self._ms_right_release),
         )
-        make_mouse_key(
-            names=('MB_RMB',),
-            code=2,
-        )
-        make_mouse_key(
-            names=('MB_BTN4',),
-            code=8,
-        )
-        make_mouse_key(
-            names=('MB_BTN5',),
-            code=16,
-        )
-        make_key(
-            names=('MW_UP',),
-            on_press=self._mw_up_press,
-            on_release=self._mw_up_release,
-        )
-        make_key(
-            names=(
-                'MW_DOWN',
-                'MW_DN',
-            ),
-            on_press=self._mw_down_press,
-            on_release=self._mw_down_release,
-        )
-        make_key(
-            names=('MS_UP',),
-            on_press=self._ms_up_press,
-            on_release=self._ms_up_release,
-        )
-        make_key(
-            names=(
-                'MS_DOWN',
-                'MS_DN',
-            ),
-            on_press=self._ms_down_press,
-            on_release=self._ms_down_release,
-        )
-        make_key(
-            names=(
-                'MS_LEFT',
-                'MS_LT',
-            ),
-            on_press=self._ms_left_press,
-            on_release=self._ms_left_release,
-        )
-        make_key(
-            names=(
-                'MS_RIGHT',
-                'MS_RT',
-            ),
-            on_press=self._ms_right_press,
-            on_release=self._ms_right_release,
-        )
+        for names, on_press, on_release in keys:
+            make_key(names=names, on_press=on_press, on_release=on_release)
 
     def during_bootup(self, keyboard):
-        self._timer = PeriodicTimer(self.acc_interval)
+        self._task = create_task(
+            lambda: self._move(keyboard),
+            period_ms=self.acc_interval,
+        )
+        cancel_task(self._task)
 
     def before_matrix_scan(self, keyboard):
         return
 
     def after_matrix_scan(self, keyboard):
-        if not self._timer.tick():
-            return
-
-        if self._nav_key_activated:
-            if self.move_step < self.max_speed:
-                self.move_step = self.move_step + 1
-            if self._right_activated:
-                AX.X.move(keyboard, self.move_step)
-            if self._left_activated:
-                AX.X.move(keyboard, -self.move_step)
-            if self._up_activated:
-                AX.Y.move(keyboard, -self.move_step)
-            if self._down_activated:
-                AX.Y.move(keyboard, self.move_step)
-
-        if self._mw_up_activated:
-            AX.W.move(keyboard, 1)
-        if self._mw_down_activated:
-            AX.W.move(keyboard, -1)
+        return
 
     def before_hid_send(self, keyboard):
         return
@@ -118,63 +69,84 @@ class MouseKeys(Module):
     def on_powersave_disable(self, keyboard):
         return
 
+    def _move(self, keyboard):
+        if self._movement & (_MR + _ML + _MD + _MU):
+            if self.move_step < self.max_speed:
+                self.move_step = self.move_step + 1
+            if self._movement & _MU:
+                AX.Y.move(keyboard, -self.move_step)
+            if self._movement & _MD:
+                AX.Y.move(keyboard, self.move_step)
+            if self._movement & _ML:
+                AX.X.move(keyboard, -self.move_step)
+            if self._movement & _MR:
+                AX.X.move(keyboard, self.move_step)
+
+        if self._movement & _WU:
+            AX.W.move(keyboard, 1)
+        if self._movement & _WD:
+            AX.W.move(keyboard, -1)
+        if self._movement & _WL:
+            AX.P.move(keyboard, -1)
+        if self._movement & _WR:
+            AX.P.move(keyboard, 1)
+
+    def _maybe_start_move(self, mask):
+        self._movement |= mask
+        if self._movement == mask:
+            self._task.restart()
+
+    def _maybe_stop_move(self, mask):
+        self._movement &= ~mask
+        if not self._movement & (_MR + _ML + _MD + _MU):
+            self.move_step = 1
+        if not self._movement:
+            cancel_task(self._task)
+
     def _mw_up_press(self, key, keyboard, *args, **kwargs):
-        self._mw_up_activated = True
+        self._maybe_start_move(_WU)
 
     def _mw_up_release(self, key, keyboard, *args, **kwargs):
-        self._mw_up_activated = False
+        self._maybe_stop_move(_WU)
 
     def _mw_down_press(self, key, keyboard, *args, **kwargs):
-        self._mw_down_activated = True
+        self._maybe_start_move(_WD)
 
     def _mw_down_release(self, key, keyboard, *args, **kwargs):
-        self._mw_down_activated = False
+        self._maybe_stop_move(_WD)
 
-    # Mouse movement
-    def _reset_next_interval(self):
-        if self._nav_key_activated == 1:
-            self.move_step = 1
+    def _mw_left_press(self, key, keyboard, *args, **kwargs):
+        self._maybe_start_move(_WL)
 
-    def _check_last(self):
-        if self._nav_key_activated == 0:
-            self.move_step = 1
+    def _mw_left_release(self, key, keyboard, *args, **kwargs):
+        self._maybe_stop_move(_WL)
+
+    def _mw_right_press(self, key, keyboard, *args, **kwargs):
+        self._maybe_start_move(_WR)
+
+    def _mw_right_release(self, key, keyboard, *args, **kwargs):
+        self._maybe_stop_move(_WR)
 
     def _ms_up_press(self, key, keyboard, *args, **kwargs):
-        self._nav_key_activated += 1
-        self._reset_next_interval()
-        self._up_activated = True
+        self._maybe_start_move(_MU)
 
     def _ms_up_release(self, key, keyboard, *args, **kwargs):
-        self._up_activated = False
-        self._nav_key_activated -= 1
-        self._check_last()
+        self._maybe_stop_move(_MU)
 
     def _ms_down_press(self, key, keyboard, *args, **kwargs):
-        self._nav_key_activated += 1
-        self._reset_next_interval()
-        self._down_activated = True
+        self._maybe_start_move(_MD)
 
     def _ms_down_release(self, key, keyboard, *args, **kwargs):
-        self._down_activated = False
-        self._nav_key_activated -= 1
-        self._check_last()
+        self._maybe_stop_move(_MD)
 
     def _ms_left_press(self, key, keyboard, *args, **kwargs):
-        self._nav_key_activated += 1
-        self._reset_next_interval()
-        self._left_activated = True
+        self._maybe_start_move(_ML)
 
     def _ms_left_release(self, key, keyboard, *args, **kwargs):
-        self._nav_key_activated -= 1
-        self._left_activated = False
-        self._check_last()
+        self._maybe_stop_move(_ML)
 
     def _ms_right_press(self, key, keyboard, *args, **kwargs):
-        self._nav_key_activated += 1
-        self._reset_next_interval()
-        self._right_activated = True
+        self._maybe_start_move(_MR)
 
     def _ms_right_release(self, key, keyboard, *args, **kwargs):
-        self._nav_key_activated -= 1
-        self._right_activated = False
-        self._check_last()
+        self._maybe_stop_move(_MR)
