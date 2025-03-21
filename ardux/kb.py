@@ -21,7 +21,7 @@ LAYER_ID_SYMBOLS = 4
 LAYER_ID_CUSTOM = 5
 LAYER_ID_MOUSE = 6
 
-class _ArduxKeyboard(KMKKeyboard):
+class _ArduxKeyboardStandard(KMKKeyboard):
     coord_mapping = [
         0,  1,  2,  3,
         4,  5,  6,  7,

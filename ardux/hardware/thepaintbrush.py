@@ -1,4 +1,4 @@
-from ardux.kb import _ArduxKeyboard
+from ardux.kb import _ArduxKeyboardStandard
 from kmk.scanners.keypad import KeysScanner
 
 import os
@@ -13,7 +13,7 @@ else:
 
 
 # ThePaintbrush Implementation
-class ThePaintbrushArduxKeyboard(_ArduxKeyboard):
+class ThePaintbrushArduxKeyboard(_ArduxKeyboardStandard):
     def setup_physical_config(self):
         # Direct wire & matrix setup
         self.matrix = KeysScanner(

@@ -27,4 +27,3 @@ if os.getenv('ARDUX_RGB_KB2040'):
 # Main
 if __name__ == '__main__':
     ardux_keyboard.go()
-
