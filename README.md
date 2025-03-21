@@ -13,6 +13,8 @@ Put [this](https://raw.githubusercontent.com/adafruit/Adafruit_CircuitPython_Neo
 
 ## Compile mpy files for nice!nano kmk
 
+WARNING: This is likely outdated and needs a revisit
+
 ``` bash
 docker run -v /scratch/kmk_firmware:/opt/kmk_firmware --rm -it --entrypoint=/bin/bash python:latest
 cd /opt
@@ -33,4 +35,4 @@ cp ~.compiled/kmk~ folder -> mcu
 - Format storage via `REPL`: https://docs.circuitpython.org/en/latest/docs/troubleshooting.html
 - [MicroPython Docs](https://docs.micropython.org/en/latest/index.html)
 - [CircuitPython Docs](https://docs.circuitpython.org/en/latest/docs/environment.html#environment-variables)
-
+- Adafruit kb2040 circuit python updates are at: https://circuitpython.org/board/adafruit_kb2040/
