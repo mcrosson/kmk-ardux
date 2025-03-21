@@ -7,9 +7,6 @@ ardux_board = os.getenv('ARDUX_BOARD')
 if ardux_board == 'thepaintbrush':
     from ardux.hardware.thepaintbrush import ThePaintbrushArduxKeyboard
     ardux_keyboard = ThePaintbrushArduxKeyboard()
-elif ardux_board == 'quagboard':
-    from ardux.hardware.quagboard import QuagboardArduxKeyboard
-    ardux_keyboard = QuagboardArduxKeyboard()
 else:
     raise NotImplementedError('Please configure the proper keyboard in "settings.toml"')
 
