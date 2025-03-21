@@ -13,19 +13,23 @@ Put [this](https://raw.githubusercontent.com/adafruit/Adafruit_CircuitPython_Neo
 
 ## Compile mpy files for nice!nano kmk
 
-WARNING: This is likely outdated and needs a revisit
+Note: nice!nano must be runing CircuitPython first. See [here](https://circuitpython.org/board/nice_nano/) for more information
 
 ``` bash
-docker run -v /scratch/kmk_firmware:/opt/kmk_firmware --rm -it --entrypoint=/bin/bash python:latest
+cd /tmp
+git clone https://github.com/KMKfw/kmk_firmware.git
+cd kmk_firmware
+docker run -v .:/opt/kmk_firmware --rm -it ubuntu:24.04
 cd /opt
-wget https://adafruit-circuit-python.s3.amazonaws.com/bin/mpy-cross/mpy-cross.static-amd64-linux-8.0.5
-chmod a+x mpy-cross.static-amd64-linux-8.0.5
-./mpy-cross.static-amd64-linux-8.0.5 --help
-mv mpy-cross.static-amd64-linux-8.0.5 /usr/bin/mpy-cross
+apt update && apt install -y wget python3 python-is-python3 build-essential
+wget https://adafruit-circuit-python.s3.amazonaws.com/bin/mpy-cross/linux-amd64/mpy-cross-linux-amd64-9.2.5.static
+chmod a+x mpy-cross-linux-amd64-9.2.5.static
+./mpy-cross-linux-amd64-9.2.5.static --help
+mv mpy-cross-linux-amd64-9.2.5.static /usr/bin/mpy-cross
 mpy-cross --help
 cd /opt/kmk_firmware
-python util/compile.py
-cp ~.compiled/kmk~ folder -> mcu
+make compile
+cp `.compiled/kmk` folder -> mcu
 ```
 
 ## Misc
