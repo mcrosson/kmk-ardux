@@ -1,5 +1,6 @@
 # KMK Specific
 .compiled/
+compiled/
 .ampy
 .submodules
 .circuitpy-deps
