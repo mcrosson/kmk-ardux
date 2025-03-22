@@ -4,9 +4,9 @@
 
 ### We are using the following upstream code:
 
-- **CircuitPython**: `9.2.5`
-- **KMK Code Revision**: `74b6a777dccda7d1940a1f303270eff9e60ee6a8`
-- **Neopixel Library Code Revision**: `af8ae5e17b69e681978c80eb74bcf46e5b86f4af`
+- [**CircuitPython**](https://circuitpython.org/): `9.2.5`
+- [**KMK Code Revision**](https://github.com/KMKfw/kmk_firmware): `74b6a777dccda7d1940a1f303270eff9e60ee6a8`
+- [**Neopixel Library Code Revision**](https://github.com/adafruit/Adafruit_CircuitPython_NeoPixel/blob/main/neopixel.py): `af8ae5e17b69e681978c80eb74bcf46e5b86f4af`
 
 ### Verifying CircuitPython Version
 
