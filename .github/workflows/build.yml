@@ -1,0 +1,80 @@
+name: Build
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  setup_environment:
+    name: Setup environment
+    runs-on: ubuntu-latest
+    outputs:
+      runs-on-default: ${{ steps.setup_env.outputs.runs-on-default }}
+      mpy-cross-path: ${{ steps.setup_env.outputs.mpy-cross-path }}
+      files-to-delete-on-release: ${{ steps.setup_env.outputs.files-to-delete-on-release }}
+      release_date: ${{ steps.setup_env.outputs.release_date }}
+      release_text: ${{ steps.setup_env.outputs.release_text }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Setup environment
+        id: setup_env
+        uses: ./.github/actions/setup_env
+  compile_sources_upload:
+    name: Compile sources to mpy & upload artifact
+    needs: setup_environment
+    strategy:
+      matrix:
+        # Check https://adafruit-circuit-python.s3.amazonaws.com/index.html?prefix=bin/mpy-cross/linux-amd64/ to get the latest version
+        mpy-cross-release: ["9.2.5"]
+    runs-on: ubuntu-24.04 # ${{ needs.setup_environment.outputs.runs-on-default }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Cache mpy-cross
+        id: cache-mpy-cross
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-mpy-cross
+        with:
+          path: ${{ github.workspace }}/mpy-cross
+          key: ${{ matrix.mpy-cross-release }}
+      - if: ${{ steps.cache-mpy-cross.outputs.cache-hit != 'true' }}
+        name: install mpy-cross
+        run: |
+          wget --no-verbose "${{ needs.setup_environment.outputs.mpy-cross-path }}${{ matrix.mpy-cross-release }}.static" -O ${{ github.workspace }}/mpy-cross; \
+          chmod +x ${{ github.workspace }}/mpy-cross
+      - name: compile
+        run: PATH=.:$PATH make compile
+      - name: Housekeeping & Status Info
+        run: |
+          find . -type f -maxdepth 1 | xargs -I{} cp {} compiled/; \
+          cd compiled && rm -rf ${{ needs.setup_environment.outputs.files-to-delete-on-release }} && cd ..; \
+          mv compiled/settings.toml compiled/settings.toml.release; \
+          ls -la compiled/*;
+      - name: upload zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: kmk-ardux-${{ needs.setup_environment.outputs.release_date }}-compiled-${{ matrix.mpy-cross-release }}
+          path: compiled/
+          include-hidden-files: true
+          retention-days: 14
+          if-no-files-found: error
+  upload_generic_sources:
+    name: Upload sources as artifact
+    needs: setup_environment
+    runs-on: ${{ needs.setup_environment.outputs.runs-on-default }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Housekeeping & Status Info
+        run: |
+          rm -rf ${{ needs.setup_environment.outputs.files-to-delete-on-release }}; \
+          mv settings.toml settings.toml.release; \
+          ls -la .;
+      - name: upload zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: kmk-ardux-${{ needs.setup_environment.outputs.release_date }}-generic
+          path: .
+          include-hidden-files: true
+          retention-days: 14
+          if-no-files-found: error

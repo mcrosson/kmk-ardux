@@ -1,0 +1,45 @@
+name: "Setup build & release environments"
+description: "setup shared environment values"
+outputs:
+  runs-on-default: 
+    description: the default 'runs-on' value to use
+    value: "ubuntu-24.04"
+  mpy-cross-path: 
+    description: "Root url for downloading mpy-cross"
+    value: "https://adafruit-circuit-python.s3.amazonaws.com/bin/mpy-cross/linux-amd64/mpy-cross-linux-amd64-"
+  files-to-delete-on-release: 
+    description: the files to delete/cleanup prior to creating a release
+    value: "Makefile .git .github .gitignore mpy-cross"
+  release_date:
+    description: "the date & time when the build started"
+    value: ${{ steps.release_date.outputs.release_date }}
+  release_text:
+    description: "the generic test to use for releases"
+    value: ${{ steps.release_text.outputs.release_text }}
+runs:
+  using: "composite"
+  steps:
+    - name: Current Date
+      id: release_date
+      run: echo "release_date=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Release text
+      id: release_text
+      run: >
+        echo "release_text=$(echo '<b>Firmware files for KMK ARDUX
+        </b><br><br>
+        Download a firmware file by expanding "Assets", right clicking, and choosing "Save File As" or "Save Link As".
+        <br>
+        Released timestamp: ${{ steps.release_date.outputs.release_date }}')" >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Show various build information
+      run: |
+          echo "release_date: ${{ steps.release_date.outputs.release_date }}"
+      shell: bash
+    - name: Show computed release text
+      run: |
+        echo "release_text: ${{ steps.release_text.outputs.release_text }}"
+      shell: bash
+    - name: Directory contents
+      run: ls -la .
+      shell: bash
