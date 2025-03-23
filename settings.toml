@@ -1,17 +1,24 @@
-# General setup & config
+# Board setup & config
 ARDUX_SIZE = "[STANDARD|BIG|40%]"
 ARDUX_HAND = "[LEFT|RIGHT]"
 ARDUX_BOARD = "see ardux/hardware for options"
 ARDUX_MCU = "[nice_nano|kb2040|sparkfun_promicro_rp2040]"
+
+# Bluetooth
+#CIRCUITPY_BLE_NAME = "ARDUX [L|R] [board]" # The name of the device when pairing, etc
+
+# RGB status indicator(s)
 #ARDUX_RGB_KB2040 = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
 
-# Name shown via bluetooth
-#CIRCUITPY_BLE_NAME = "ARDUX [L|R] [board]"
+# Displays
+#ARDUX_DISPLAY_DRIVER = "SSD1306"
+#ARDUX_DISPLAY_HEIGHT = 32
+#ARDUX_DISPLAY_WIDTH = 128
 
 # Remix Selection (See docs before uncommenting this line)
-# ARDUX_REMIX="name_of_remix"
-# ARDUX_REMIX_KB_CLASS="ThePaintbrushArduxKeyboardRemixed"
+# ARDUX_REMIX = "name_of_remix"
+# ARDUX_REMIX_KB_CLASS = "ThePaintbrushArduxKeyboardRemixedExample"
 
 # Debugging / development
 #ARDUX_KMK_DEBUGGING = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
-ARDUX_KMK_USB_DISK_ALWAYS = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
+#ARDUX_KMK_USB_DISK_ALWAYS = 1 # Code only looks for value ; Uncomment/Comment to enable/disable

@@ -7,6 +7,7 @@
 - [**CircuitPython**](https://circuitpython.org/): `9.2.5`
 - [**KMK Code Revision**](https://github.com/KMKfw/kmk_firmware): `74b6a777dccda7d1940a1f303270eff9e60ee6a8`
 - [**Neopixel Library Code Revision**](https://github.com/adafruit/Adafruit_CircuitPython_NeoPixel/blob/main/neopixel.py): `af8ae5e17b69e681978c80eb74bcf46e5b86f4af`
+- [**adafruit_display_text (From main library bundle)**](https://circuitpython.org/libraries): `9.x-mpy-20250319`
 
 ### Verifying CircuitPython Version
 
@@ -62,9 +63,27 @@ In particular:
 
 Once you've updated `settings.toml`, you can delete `settings.toml.release` from your mcu.
 
-## Remixes / Remixing
+## Optional Features
+
+There are a number of optional features available that are disabled by default. The following sections detail these features.
+
+Note: the `settings.toml` file will have example configuration(s) for these features. To activate the values in `settings.toml`, remove the `#` from the start of the line and adjust the value as appropriate.
+
+### Remixes / Remixing
 
 This feature set is under active development. Please visit the [inkeys Discord](https://discord.gg/fGUjnUuAVQ) and ask for details.
+
+### Display
+
+The project has basic support for `SS1306` oleds. Simply uncomment the necessary lines in `settings.toml` to activate display support.
+
+The oled will show the following information:
+
+- the active layer
+
+**Important!**
+
+Display support will *not* work on the `nice!nano` mcu. The mcu does *not* have enough ram to drive the display and ardux at the same time.
 
 ## For Developers
 

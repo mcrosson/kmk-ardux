@@ -13,6 +13,9 @@ from kmk.extensions.media_keys import MediaKeys
 
 from ardux.constants import *
 
+if os.getenv('ARDUX_DISPLAY_DRIVER'):
+    from ardux.oled import *
+
 class _ArduxKeyboardStandard(KMKKeyboard):
     coord_mapping = [
         0,  1,  2,  3,
@@ -75,6 +78,10 @@ class _ArduxKeyboardStandard(KMKKeyboard):
 
         # Setup combos
         self.setup_combos()
+
+        # Display, if enabled
+        if os.getenv('ARDUX_DISPLAY_DRIVER'):
+            self.extensions.append(display)
 
     # Define keymap
     def setup_keymap(self):
@@ -191,4 +198,3 @@ class _ArduxKeyboardStandard(KMKKeyboard):
         self.combo_module.combos.append(Chord((self.base_o_custom, KC.T), KC.NO, timeout=100))
         self.combo_module.combos.append(Chord((self.base_o_custom, self.base_s_numbers), KC.NO, timeout=100))
         self.combo_module.combos.append(Chord((self.base_s_numbers, KC.Y), KC.NO, timeout=100))
-
