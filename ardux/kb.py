@@ -4,7 +4,6 @@ import board
 from kmk.kmk_keyboard import KMKKeyboard
 from kmk.keys import KC
 
-from kmk.modules.layers import Layers
 from kmk.modules.combos import Combos, Chord
 from kmk.modules.holdtap import HoldTap
 from kmk.modules.sticky_keys import StickyKeys
@@ -12,9 +11,13 @@ from kmk.modules.mouse_keys import MouseKeys
 from kmk.extensions.media_keys import MediaKeys
 
 from ardux.constants import *
+from ardux.layers import ArduxLayers
 
 if os.getenv('ARDUX_DISPLAY_DRIVER'):
     from ardux.oled import *
+
+if os.getenv('ARDUX_RGB_PIXEL_PIN'):
+    from ardux.rgb import *
 
 class _ArduxKeyboardStandard(KMKKeyboard):
     coord_mapping = [
@@ -46,7 +49,7 @@ class _ArduxKeyboardStandard(KMKKeyboard):
         self.setup_physical_config()
 
         # Layers
-        self.layers_module = Layers()
+        self.layers_module = ArduxLayers()
         self.layers_module.prefer_hold=False
         self.layers_module.tap_interrupted=True
         self.modules.append(self.layers_module)
@@ -78,6 +81,10 @@ class _ArduxKeyboardStandard(KMKKeyboard):
 
         # Setup combos
         self.setup_combos()
+
+        # RGB, if enabled
+        if ardux_rgb_active:
+            self.extensions.append(rgb_ext)
 
         # Display, if enabled
         if os.getenv('ARDUX_DISPLAY_DRIVER'):

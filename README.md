@@ -73,9 +73,19 @@ Note: the `settings.toml` file will have example configuration(s) for these feat
 
 This feature set is under active development. Please visit the [inkeys Discord](https://discord.gg/fGUjnUuAVQ) and ask for details.
 
+### RGB Status Indicators
+
+The project has basic support for RGB leds by way of the Adafruit Neopixel library. Simply uncomment the necessary lines in `settings.toml` and adjust as appropriate to enable RGB indicator support.
+
+The following status indicators are implemented:
+
+- base layer: blue
+- momentary layers: purple
+- toggle layers: red
+
 ### Display
 
-The project has basic support for `SS1306` oleds. Simply uncomment the necessary lines in `settings.toml` to activate display support.
+The project has basic support for `SS1306` oleds. Simply uncomment the necessary lines in `settings.toml` and adjust as appropriate to activate display support.
 
 The oled will show the following information:
 
