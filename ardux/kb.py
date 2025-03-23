@@ -1,4 +1,3 @@
-# from discord: and about the layers getting stuck, i found out that if you accidentally hit two keys that are layer keys, and they dont have a combo between them, they gonna get stuck
 import os
 
 import board
@@ -12,14 +11,7 @@ from kmk.modules.sticky_keys import StickyKeys
 from kmk.modules.mouse_keys import MouseKeys
 from kmk.extensions.media_keys import MediaKeys
 
-# constants
-LAYER_ID_BASE = 0
-LAYER_ID_PARENS = 1
-LAYER_ID_NUMBERS = 2
-LAYER_ID_NAVIGATION = 3
-LAYER_ID_SYMBOLS = 4
-LAYER_ID_CUSTOM = 5
-LAYER_ID_MOUSE = 6
+from ardux.constants import *
 
 class _ArduxKeyboardStandard(KMKKeyboard):
     coord_mapping = [

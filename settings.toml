@@ -8,6 +8,10 @@ ARDUX_MCU = "[nice_nano|kb2040|sparkfun_promicro_rp2040]"
 # Name shown via bluetooth
 #CIRCUITPY_BLE_NAME = "ARDUX [L|R] [board]"
 
+# Remix Selection (See docs before uncommenting this line)
+# ARDUX_REMIX="name_of_remix"
+# ARDUX_REMIX_KB_CLASS="ThePaintbrushArduxKeyboardRemixed"
+
 # Debugging / development
 #ARDUX_KMK_DEBUGGING = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
 ARDUX_KMK_USB_DISK_ALWAYS = 1 # Code only looks for value ; Uncomment/Comment to enable/disable

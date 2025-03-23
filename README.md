@@ -62,6 +62,10 @@ In particular:
 
 Once you've updated `settings.toml`, you can delete `settings.toml.release` from your mcu.
 
+## Remixes / Remixing
+
+This feature set is under active development. Please visit the [inkeys Discord](https://discord.gg/fGUjnUuAVQ) and ask for details.
+
 ## For Developers
 
 Some things that may be useful for developers and those that'd like to dig deeper:

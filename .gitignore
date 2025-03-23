@@ -1,6 +1,7 @@
-# KMK Specific
+# KMK & Ardux Specific
 .compiled/
 compiled/
+remixes/
 .ampy
 .submodules
 .circuitpy-deps
