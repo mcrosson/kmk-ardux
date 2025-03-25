@@ -23,7 +23,6 @@ class Combo:
     fast_reset = False
     per_key_timeout = False
     timeout = 50
-    _remaining = []
     _timeout = None
     _state = _ComboState.IDLE
     _match_coord = False
@@ -51,6 +50,21 @@ class Combo:
             self.timeout = timeout
         if match_coord is not None:
             self._match_coord = match_coord
+        self._remaining = []
+
+    @property
+    def state(self):
+        return self._state
+
+    @state.setter
+    def state(self, new_state):
+        if self._state == new_state:
+            return
+        if new_state == _ComboState.MATCHING:
+            Combos.match_count += 1
+        if self._state == _ComboState.MATCHING:
+            Combos.match_count -= 1
+        self._state = new_state
 
     def __repr__(self):
         return f'{self.__class__.__name__}({list(self.match)})'
@@ -101,6 +115,8 @@ class Sequence(Combo):
 
 
 class Combos(Module):
+    match_count = 0
+
     def __init__(self, combos=[]):
         self.combos = combos
         self._key_buffer = []
@@ -136,37 +152,35 @@ class Combos(Module):
 
     def on_press(self, keyboard: KMKKeyboard, key: Key, int_coord: Optional[int]):
         # refill potential matches from timed-out matches
-        if self.count_matching() == 0:
+        if self.match_count == 0:
             for combo in self.combos:
-                if combo._state == _ComboState.RESET:
-                    combo._state = _ComboState.MATCHING
+                if combo.state == _ComboState.RESET:
+                    combo.state = _ComboState.MATCHING
 
         # filter potential matches
         for combo in self.combos:
-            if combo._state != _ComboState.MATCHING:
+            if combo.state != _ComboState.MATCHING:
                 continue
             if combo.matches(key, int_coord):
                 continue
-            combo._state = _ComboState.IDLE
+            combo.state = _ComboState.IDLE
             if combo._timeout:
                 keyboard.cancel_timeout(combo._timeout)
             combo._timeout = keyboard.set_timeout(
                 combo.timeout, lambda c=combo: self.reset_combo(keyboard, c)
             )
 
-        match_count = self.count_matching()
-
-        if match_count:
+        if self.match_count:
             # At least one combo matches current key: append key to buffer.
             self._key_buffer.append((int_coord, key, True))
             key = None
 
             for first_match in self.combos:
-                if first_match._state == _ComboState.MATCHING:
+                if first_match.state == _ComboState.MATCHING:
                     break
 
             # Single match left: don't wait on timeout to activate
-            if match_count == 1 and not any(first_match._remaining):
+            if self.match_count == 1 and len(first_match._remaining) == 0:
                 combo = first_match
                 self.activate(keyboard, combo)
                 if combo._timeout:
@@ -177,7 +191,7 @@ class Combos(Module):
 
             # Start or reset individual combo timeouts.
             for combo in self.combos:
-                if combo._state != _ComboState.MATCHING:
+                if combo.state != _ComboState.MATCHING:
                     continue
                 if combo._timeout:
                     if combo.per_key_timeout:
@@ -199,7 +213,7 @@ class Combos(Module):
 
     def on_release(self, keyboard: KMKKeyboard, key: Key, int_coord: Optional[int]):
         for combo in self.combos:
-            if combo._state != _ComboState.ACTIVE:
+            if combo.state != _ComboState.ACTIVE:
                 continue
             if combo.has_match(key, int_coord):
                 # Deactivate combo if it matches current key.
@@ -210,7 +224,7 @@ class Combos(Module):
                     self._key_buffer = []
                 else:
                     combo.insert(key, int_coord)
-                    combo._state = _ComboState.MATCHING
+                    combo.state = _ComboState.MATCHING
 
                 key = None
                 break
@@ -220,13 +234,13 @@ class Combos(Module):
             # if they're the only match, or "un-match" the released key but stay
             # matching if they're a repeatable combo.
             for combo in self.combos:
-                if combo._state != _ComboState.MATCHING:
+                if combo.state != _ComboState.MATCHING:
                     continue
                 if not combo.has_match(key, int_coord):
                     continue
 
                 # Combo matches, but first key released before timeout.
-                elif not any(combo._remaining) and self.count_matching() == 1:
+                if len(combo._remaining) == 0 and self.count_exact_matches() == 1:
                     keyboard.cancel_timeout(combo._timeout)
                     self.activate(keyboard, combo)
                     self._key_buffer = []
@@ -236,10 +250,10 @@ class Combos(Module):
                         self.reset_combo(keyboard, combo)
                     else:
                         combo.insert(key, int_coord)
-                        combo._state = _ComboState.MATCHING
+                        combo.state = _ComboState.MATCHING
                     self.reset(keyboard)
 
-                elif not any(combo._remaining):
+                elif len(combo._remaining) == 0:
                     continue
 
                 # Skip combos that allow tapping.
@@ -249,7 +263,7 @@ class Combos(Module):
                 # This was the last key released of a repeatable combo.
                 elif len(combo._remaining) == len(combo.match) - 1:
                     self.reset_combo(keyboard, combo)
-                    if not self.count_matching():
+                    if not self.match_count:
                         self._key_buffer.append((int_coord, key, False))
                         self.send_key_buffer(keyboard)
                         self._key_buffer = []
@@ -269,7 +283,7 @@ class Combos(Module):
                 key = None
 
         # Reset on non-combo key up
-        if not self.count_matching():
+        if not self.match_count:
             self.reset(keyboard)
 
         return key
@@ -279,7 +293,7 @@ class Combos(Module):
         # else, drop it from the match list.
         combo._timeout = None
 
-        if not any(combo._remaining):
+        if len(combo._remaining) == 0:
             self.activate(keyboard, combo)
             # check if the last buffered key event was a 'release'
             if not self._key_buffer[-1][2]:
@@ -288,7 +302,7 @@ class Combos(Module):
             self._key_buffer = []
             self.reset(keyboard)
         else:
-            if self.count_matching() == 1:
+            if self.match_count == 1:
                 # This was the last pending combo: flush key buffer.
                 self.send_key_buffer(keyboard)
                 self._key_buffer = []
@@ -302,29 +316,29 @@ class Combos(Module):
         if debug.enabled:
             debug('activate', combo)
         keyboard.resume_process_key(self, combo.result, True)
-        combo._state = _ComboState.ACTIVE
+        combo.state = _ComboState.ACTIVE
 
     def deactivate(self, keyboard, combo):
         if debug.enabled:
             debug('deactivate', combo)
         keyboard.resume_process_key(self, combo.result, False)
-        combo._state = _ComboState.IDLE
+        combo.state = _ComboState.IDLE
 
     def reset_combo(self, keyboard, combo):
         combo.reset()
         if combo._timeout is not None:
             keyboard.cancel_timeout(combo._timeout)
             combo._timeout = None
-        combo._state = _ComboState.RESET
+        combo.state = _ComboState.RESET
 
     def reset(self, keyboard):
         for combo in self.combos:
-            if combo._state != _ComboState.ACTIVE:
+            if combo.state != _ComboState.ACTIVE:
                 self.reset_combo(keyboard, combo)
 
-    def count_matching(self):
-        match_count = 0
+    def count_exact_matches(self):
+        count = 0
         for combo in self.combos:
-            if combo._state == _ComboState.MATCHING:
-                match_count += 1
-        return match_count
+            if combo.state == _ComboState.MATCHING and len(combo._remaining) == 0:
+                count += 1
+        return count
