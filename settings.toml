@@ -1,10 +1,10 @@
 # Board setup & config
 ARDUX_SIZE = "[STANDARD|BIG|40%]"
 ARDUX_HAND = "[LEFT|RIGHT]"
-ARDUX_BOARD = "see ardux/hardware for options"
+ARDUX_BOARD = "see readme for detail"
 ARDUX_MCU = "[nice_nano|kb2040|sparkfun_promicro_rp2040]"
 
-# Bluetooth
+# Bluetooth -- This is a core circuit python config
 #CIRCUITPY_BLE_NAME = "ARDUX [L|R] [board]" # The name of the device when pairing, etc
 
 # RGB status indicator config
