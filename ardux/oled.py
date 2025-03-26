@@ -13,6 +13,15 @@ from ardux.constants import *
 if 'SSD1306' == os.getenv('ARDUX_DISPLAY_DRIVER'):
     from kmk.extensions.display.ssd1306 import SSD1306
 
+class ArduxDisplay(Display):
+    def render(self, layer):
+        # Simple, non-ideal fix for memory alloc error when refreshing oled
+        #    - this is issue is mainly seen on the n!n
+        #    - this is not an ideal fix
+        #    - this causes the display to 'blink'
+        self.display.root_group = None
+        super().render(layer)
+
 # Init as blank, set these based on which oled is enabled in config
 i2c_bus = None
 display_driver = None
@@ -26,7 +35,7 @@ if 'SSD1306' == os.getenv('ARDUX_DISPLAY_DRIVER'):
         # device_address=0x3C,
     )
 
-    display = Display(
+    display = ArduxDisplay(
         display=display_driver,
         entries=[
             TextEntry(text='Layer: ', x=0, y=4, x_anchor='L', y_anchor='T'),
