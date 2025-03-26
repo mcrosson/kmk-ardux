@@ -93,7 +93,7 @@ The oled will show the following information:
 
 **Important!**
 
-Display support will *not* work on the `nice!nano` mcu. The mcu does *not* have enough ram to drive the display and ardux at the same time.
+We've extended and adjusted the main KMK `Display` class to work around a memory allocation bug that can surface on the nice!nano. This work around will cause the display to 'blink' brifely whenever it is updated.
 
 ## For Developers
 
