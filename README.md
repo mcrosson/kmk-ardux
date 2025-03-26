@@ -21,11 +21,7 @@ We have vendored the KMK code within this repo. The `kmk` folder has the KMK rel
 
 In order for KMK to work, you'll need to add the code that sets up KMK for your specific board. In this repo there is a `boards` directory that has our custom board definitions (ie. for The Paintbrush and crkbd corne) as well as a vendored copy of the upstream KMK board definitions.
 
-In our `boards` directory there will be individual board setup `.py` files as well as a `kmk` directory with the upstream KMK board defintions.
-
-You'll need to create a `boards` directory on your mcu and copy the `__init__.py` file, proper `.py` file for your board as well as the upstream KMK board directory for your board (if available) to your mcu. You'll need to put the upstream KMK code in a `kmk` directory within the main `boards` directory (ie `boards/kmk/crkbd`).
-
-Note: the compiled sources to *not* include a commpiled copy of `main.py` from the board definition folders. This is intentional. The `main.py` files in the board defintions are meant to be used as the primary `main.py` on an mcu which isn't necessary due to how ardux is implemented in KMK.
+You'll need to create a `boards` directory on your mcu and copy the `__init__.py` file and proper `.py` file for your board to your mcu.
 
 ### Required Libraries
 
@@ -54,7 +50,7 @@ See the `nice!nano` section for additional details.
 To install KMK and ardux on an mcu:
 
 1. Download the most recent release
-1. Copy the necessary board definition files to the mcu
+1. Copy the necessary board definition file to the mcu
 1. Extract the files to the `CIRCUITPY` disk exposed by the mcu
 1. Rename `settings.toml.release` to `settings.toml`
 1. Adjust `settings.toml` as appropriate
