@@ -34,6 +34,14 @@ else:
     print('Unsupported mcu: ', os.getenv('ARDUX_MCU'))
     raise NotImplementedError('Unsupported mcu:'+ os.getenv('ARDUX_MCU'))
 
+if os.getenv('ARDUX_SIZE') not in ('STANDARD', 'BIG', '40%'):
+    print('Unsupported ardux size: ', os.getenv('ARDUX_SIZE'))
+    raise NotImplementedError('Unsupported ardux size:'+ os.getenv('ARDUX_SIZE'))
+
+if os.getenv('ARDUX_SIZE') == 'STANDARD' and os.getenv('ARDUX_BOARD') == 'crkbd':
+    print('The crkbd corne only supports "BIG" and "40%" ardux, please review your `settings.toml` config.')
+    raise NotImplementedError('The corne only supports "BIG" and "40%" ardux')
+
 key_1 = digitalio.DigitalInOut(pins[12])
 key_2 = digitalio.DigitalInOut(pins[15])
 
