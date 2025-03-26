@@ -33,6 +33,9 @@ if not ardux_board_custom:
     if ardux_board == 'thepaintbrush':
         from boards.thepaintbrush import ThePaintbrushArduxKeyboard
         ardux_keyboard = ThePaintbrushArduxKeyboard()
+    elif ardux_board == 'crkbd': # corne
+        from boards.crkbd import CrkbdArduxKeyboard
+        ardux_keyboard = CrkbdArduxKeyboard()
     else:
         raise NotImplementedError('Please configure the proper keyboard in "settings.toml"')
 
