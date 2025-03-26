@@ -5,8 +5,7 @@ debug = Debug(__name__)
 
 from kmk.modules.layers import Layers
 
-if os.getenv('ARDUX_RGB_PIXEL_PIN'):
-    from ardux.rgb import *
+from ardux.rgb import *
 
 class ArduxLayers(Layers):
     def activate_layer(self, keyboard, layer, idx=None):

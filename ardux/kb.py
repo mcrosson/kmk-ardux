@@ -16,8 +16,7 @@ from ardux.layers import ArduxLayers
 if os.getenv('ARDUX_DISPLAY_DRIVER'):
     from ardux.oled import *
 
-if os.getenv('ARDUX_RGB_PIXEL_PIN'):
-    from ardux.rgb import *
+from ardux.rgb import *
 
 class _ArduxKeyboardStandard(KMKKeyboard):
     coord_mapping = [
