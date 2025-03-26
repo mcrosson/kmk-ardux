@@ -20,7 +20,7 @@ if debug.enabled:
 ardux_board_custom = False
 if ARDUX_REMIX:
     try:
-        exec('from remixes.%s.hardware.%s import %s' % (ARDUX_REMIX, ardux_board, os.getenv('ARDUX_REMIX_KB_CLASS')))
+        exec('from remixes.%s.boards.%s import %s' % (ARDUX_REMIX, ardux_board, os.getenv('ARDUX_REMIX_KB_CLASS')))
         exec('ardux_keyboard = %s()' % (os.getenv('ARDUX_REMIX_KB_CLASS')))
         ardux_board_custom = True
         if debug.enabled:
@@ -31,7 +31,7 @@ if ARDUX_REMIX:
 # standard keyboard classes if not remixed
 if not ardux_board_custom:
     if ardux_board == 'thepaintbrush':
-        from ardux.hardware.thepaintbrush import ThePaintbrushArduxKeyboard
+        from boards.thepaintbrush import ThePaintbrushArduxKeyboard
         ardux_keyboard = ThePaintbrushArduxKeyboard()
     else:
         raise NotImplementedError('Please configure the proper keyboard in "settings.toml"')
