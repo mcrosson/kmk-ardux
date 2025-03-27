@@ -1,8 +1,7 @@
 import board
 import os
 
-from kmk.utils import Debug
-debug = Debug(__name__)
+from ardux import debug
 
 #####
 # Main keyboard object
@@ -24,6 +23,7 @@ if ARDUX_REMIX:
         exec('ardux_keyboard = %s()' % (os.getenv('ARDUX_REMIX_KB_CLASS')))
         ardux_board_custom = True
         if debug.enabled:
+            debug('Using remix %s' % ARDUX_REMIX)
             debug('Using remixed keyboard class %s' % os.getenv('ARDUX_REMIX_KB_CLASS'))
     except:
         pass

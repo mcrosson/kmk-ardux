@@ -1,12 +1,7 @@
 import os
 
-from kmk.utils import Debug
-debug = Debug(__name__)
-
 # Get remix info
 ARDUX_REMIX = os.getenv('ARDUX_REMIX')
-if debug.enabled:
-    debug('Ardux remix: ', ARDUX_REMIX)
 
 # layer constants
 LAYER_ID_BASE = 0
@@ -46,6 +41,7 @@ color_map = [
 # given how trim the circuit python libs are... we are going to use exec
 # yes, this is not ideal
 if ARDUX_REMIX:
+    from ardux import debug
     try:
         exec('from remixes.%s.constants import *' % ARDUX_REMIX)
         if debug.enabled:
