@@ -1,8 +1,5 @@
 import os
 
-from kmk.utils import Debug
-debug = Debug(__name__)
-
 import busio
 import board
 
