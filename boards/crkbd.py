@@ -16,7 +16,6 @@ else:
     print('Unsupported mcu: ', os.getenv('ARDUX_MCU'))
     raise NotImplementedError('Unsupported mcu:'+ os.getenv('ARDUX_MCU'))
 
-
 # crkbd Implementationa
 class CrkbdArduxKeyboard(_ArduxKeyboardStandard):
     def setup_physical_config(self):

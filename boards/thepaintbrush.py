@@ -13,7 +13,6 @@ else:
     print('Unsupported mcu: ', os.getenv('ARDUX_MCU'))
     raise NotImplementedError('Unsupported mcu:'+ os.getenv('ARDUX_MCU'))
 
-
 # ThePaintbrush Implementation
 class ThePaintbrushArduxKeyboard(_ArduxKeyboardStandard):
     def setup_physical_config(self):
