@@ -1,10 +1,7 @@
 import os
 import board
 
-from kmk.utils import Debug
-debug = Debug(__name__)
-
-ardux_rgb_active = None != os.getenv('ARDUX_RGB_PIXEL_PIN')
+ardux_rgb_active = bool(os.getenv('ARDUX_RGB_PIXEL_PIN'))
 
 if ardux_rgb_active:
     from kmk.extensions.RGB import RGB, AnimationModes
