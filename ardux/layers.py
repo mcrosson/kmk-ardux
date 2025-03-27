@@ -1,8 +1,5 @@
 import os
 
-from kmk.utils import Debug
-debug = Debug(__name__)
-
 from kmk.modules.layers import Layers
 
 from ardux.rgb import *
