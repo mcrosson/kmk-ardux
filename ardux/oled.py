@@ -1,19 +1,12 @@
 import os
-import busio
-import board
-
-from kmk.extensions.display import Display, TextEntry, ImageEntry
-
-from ardux.constants import *
-
-if 'SSD1306' == os.getenv('ARDUX_DISPLAY_DRIVER'):
-    from kmk.extensions.display.ssd1306 import SSD1306
 
 # Init as blank, set these based on which oled is enabled in config
 display_driver = None
 ardux_display = None
 
 if 'SSD1306' == os.getenv('ARDUX_DISPLAY_DRIVER'):
+    import busio, board
+    from kmk.extensions.display.ssd1306 import SSD1306
     i2c_bus = busio.I2C(scl=board.SCL, sda=board.SDA)
     display_driver = SSD1306(
         i2c=i2c_bus,
@@ -22,6 +15,8 @@ if 'SSD1306' == os.getenv('ARDUX_DISPLAY_DRIVER'):
     )
 
 if display_driver:
+    from kmk.extensions.display import Display, TextEntry, ImageEntry
+    from ardux.constants import *
     class ArduxDisplay(Display):
         def render(self, layer):
             # Simple, non-ideal fix for memory alloc error when refreshing oled
@@ -47,3 +42,4 @@ if display_driver:
         width=os.getenv('ARDUX_DISPLAY_WIDTH'),
         height=os.getenv('ARDUX_DISPLAY_HEIGHT')
     )
+    display_driver = None
