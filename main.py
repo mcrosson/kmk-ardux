@@ -39,4 +39,10 @@ if not ARDUX_REMIX:
 #####
 # Main
 if __name__ == '__main__':
-    ardux_keyboard.go()
+    if os.getenv('CIRCUITPY_BLE_NAME'):
+        from kmk.hid import HIDModes
+        ardux_keyboard.go(hid_type=HIDModes.BLE, ble_name=os.getenv('CIRCUITPY_BLE_NAME'),
+                          secondary_hid_type=HIDModes.USB
+                          )
+    else:
+        ardux_keyboard.go()
