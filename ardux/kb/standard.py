@@ -4,7 +4,7 @@ import board
 from kmk.kmk_keyboard import KMKKeyboard
 from kmk.keys import KC
 
-from kmk.modules.combos import Combos, Chord
+from kmk.modules.combos import Combos
 from kmk.modules.holdtap import HoldTap
 from kmk.modules.sticky_keys import StickyKeys
 from kmk.modules.mouse_keys import MouseKeys
@@ -12,6 +12,7 @@ from kmk.extensions.media_keys import MediaKeys
 
 from ardux.constants import *
 from ardux.layers import ArduxLayers
+from ardux.kb import ArduxChord
 
 from ardux.oled import *
 from ardux.rgb import *
@@ -119,81 +120,81 @@ class _ArduxKeyboardStandard(KMKKeyboard):
         #####
         # std - base
         # layers
-        self.combo_module.combos.append(Chord((KC.R, KC.I, self.base_e_symbols), KC.TO(LAYER_ID_NAVIGATION)))
-        self.combo_module.combos.append(Chord((KC.T, KC.Y, self.base_a_parens), KC.TO(LAYER_ID_MOUSE)))
+        self.combo_module.combos.append(ArduxChord((KC.R, KC.I, self.base_e_symbols), KC.TO(LAYER_ID_NAVIGATION)))
+        self.combo_module.combos.append(ArduxChord((KC.T, KC.Y, self.base_a_parens), KC.TO(LAYER_ID_MOUSE)))
         # mods
-        self.combo_module.combos.append(Chord((self.base_s_numbers, self.base_e_symbols), KC.SK(KC.LCTRL)))
-        self.combo_module.combos.append(Chord((KC.Y, self.base_s_numbers), KC.SK(KC.LGUI)))
-        self.combo_module.combos.append(Chord((KC.I, self.base_s_numbers), KC.SK(KC.LALT)))
-        self.combo_module.combos.append(Chord((self.base_s_numbers, KC.R, KC.T, self.base_e_symbols), KC.SK(KC.LSHIFT)))
+        self.combo_module.combos.append(ArduxChord((self.base_s_numbers, self.base_e_symbols), KC.SK(KC.LCTRL)))
+        self.combo_module.combos.append(ArduxChord((KC.Y, self.base_s_numbers), KC.SK(KC.LGUI)))
+        self.combo_module.combos.append(ArduxChord((KC.I, self.base_s_numbers), KC.SK(KC.LALT)))
+        self.combo_module.combos.append(ArduxChord((self.base_s_numbers, KC.R, KC.T, self.base_e_symbols), KC.SK(KC.LSHIFT)))
         # control sequences
-        self.combo_module.combos.append(Chord((self.base_o_custom, KC.I, KC.Y, self.base_e_symbols), KC.SPACE))
-        self.combo_module.combos.append(Chord((self.base_a_parens,  KC.R, self.base_o_custom), KC.ESCAPE,))
-        self.combo_module.combos.append(Chord((self.base_e_symbols,  KC.R), KC.BSPACE))
-        self.combo_module.combos.append(Chord((KC.R,  KC.I), KC.DELETE))
-        self.combo_module.combos.append(Chord((self.base_a_parens,  KC.R,  KC.T,  self.base_o_custom), KC.TAB))
-        self.combo_module.combos.append(Chord((self.base_a_parens, self.base_e_symbols), KC.ENTER, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.Y, KC.I, self.base_o_custom), KC.CAPSLOCK))
+        self.combo_module.combos.append(ArduxChord((self.base_o_custom, KC.I, KC.Y, self.base_e_symbols), KC.SPACE))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens,  KC.R, self.base_o_custom), KC.ESCAPE,))
+        self.combo_module.combos.append(ArduxChord((self.base_e_symbols,  KC.R), KC.BSPACE))
+        self.combo_module.combos.append(ArduxChord((KC.R,  KC.I), KC.DELETE))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens,  KC.R,  KC.T,  self.base_o_custom), KC.TAB))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, self.base_e_symbols), KC.ENTER))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.Y, KC.I, self.base_o_custom), KC.CAPSLOCK))
         # symbols
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.Y), KC.DOT))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.I), KC.COMMA))
-        self.combo_module.combos.append(Chord((self.base_a_parens, self.base_o_custom), KC.SLASH))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.Y, KC.I), KC.QUOTE))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.Y), KC.DOT))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.I), KC.COMMA))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, self.base_o_custom), KC.SLASH))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.Y, KC.I), KC.QUOTE))
         # ansi
-        self.combo_module.combos.append(Chord((self.base_o_custom, self.base_e_symbols), KC.B))
-        self.combo_module.combos.append(Chord((self.base_e_symbols,  KC.Y), KC.C))
-        self.combo_module.combos.append(Chord((KC.I,  self.base_o_custom), KC.N))
-        self.combo_module.combos.append(Chord((self.base_a_parens,  KC.R), KC.F))
-        self.combo_module.combos.append(Chord((KC.R, KC.T), KC.G))
-        self.combo_module.combos.append(Chord((KC.Y, KC.I), KC.U))
-        self.combo_module.combos.append(Chord((self.base_e_symbols, KC.I), KC.H))
-        self.combo_module.combos.append(Chord((KC.R, self.base_s_numbers), KC.V))
-        self.combo_module.combos.append(Chord((KC.T, self.base_s_numbers),KC.J))
-        self.combo_module.combos.append(Chord((self.base_a_parens, self.base_s_numbers), KC.W))
-        self.combo_module.combos.append(Chord((KC.Y, self.base_o_custom), KC.K))
-        self.combo_module.combos.append(Chord((KC.Y, KC.I, self.base_o_custom), KC.M))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.R, KC.T), KC.D))
-        self.combo_module.combos.append(Chord((self.base_o_custom, KC.I, self.base_e_symbols), KC.P))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.T,  self.base_s_numbers), KC.Q))
-        self.combo_module.combos.append(Chord((KC.R, KC.T, self.base_s_numbers), KC.X))
-        self.combo_module.combos.append(Chord((KC.I, KC.Y, self.base_e_symbols), KC.L))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.R, KC.T, self.base_s_numbers), KC.Z))
+        self.combo_module.combos.append(ArduxChord((self.base_o_custom, self.base_e_symbols), KC.B))
+        self.combo_module.combos.append(ArduxChord((self.base_e_symbols,  KC.Y), KC.C))
+        self.combo_module.combos.append(ArduxChord((KC.I,  self.base_o_custom), KC.N))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens,  KC.R), KC.F))
+        self.combo_module.combos.append(ArduxChord((KC.R, KC.T), KC.G))
+        self.combo_module.combos.append(ArduxChord((KC.Y, KC.I), KC.U))
+        self.combo_module.combos.append(ArduxChord((self.base_e_symbols, KC.I), KC.H))
+        self.combo_module.combos.append(ArduxChord((KC.R, self.base_s_numbers), KC.V))
+        self.combo_module.combos.append(ArduxChord((KC.T, self.base_s_numbers),KC.J))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, self.base_s_numbers), KC.W))
+        self.combo_module.combos.append(ArduxChord((KC.Y, self.base_o_custom), KC.K))
+        self.combo_module.combos.append(ArduxChord((KC.Y, KC.I, self.base_o_custom), KC.M))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.R, KC.T), KC.D))
+        self.combo_module.combos.append(ArduxChord((self.base_o_custom, KC.I, self.base_e_symbols), KC.P))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.T,  self.base_s_numbers), KC.Q))
+        self.combo_module.combos.append(ArduxChord((KC.R, KC.T, self.base_s_numbers), KC.X))
+        self.combo_module.combos.append(ArduxChord((KC.I, KC.Y, self.base_e_symbols), KC.L))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.R, KC.T, self.base_s_numbers), KC.Z))
         
         #####
         # std - nav
-        self.combo_module.combos.append(Chord((KC.UP, KC.LEFT, KC.RIGHT), KC.TO(LAYER_ID_BASE)))
-        self.combo_module.combos.append(Chord((KC.END, KC.RIGHT), KC.ENTER))
-        self.combo_module.combos.append(Chord((KC.END, KC.UP, KC.PGDOWN), KC.ESCAPE))
-        self.combo_module.combos.append(Chord((KC.RIGHT, KC.UP), KC.BSPACE))
-        self.combo_module.combos.append(Chord((KC.UP, KC.LEFT), KC.DELETE))
-        self.combo_module.combos.append(Chord((KC.END, KC.UP, KC.HOME, KC.PGDOWN), KC.TAB))
-        self.combo_module.combos.append(Chord((KC.RIGHT, KC.DOWN, KC.LEFT, KC.PGDOWN), KC.SPACE))
-        self.combo_module.combos.append(Chord((KC.RIGHT, KC.PGUP), KC.SK(KC.LCTRL)))
-        self.combo_module.combos.append(Chord((KC.DOWN, KC.PGUP), KC.SK(KC.LGUI)))
-        self.combo_module.combos.append(Chord((KC.LEFT, KC.PGUP), KC.SK(KC.LALT)))
-        self.combo_module.combos.append(Chord((KC.RIGHT, KC.UP, KC.HOME, KC.PGUP), KC.SK(KC.LSHIFT)))
+        self.combo_module.combos.append(ArduxChord((KC.UP, KC.LEFT, KC.RIGHT), KC.TO(LAYER_ID_BASE)))
+        self.combo_module.combos.append(ArduxChord((KC.END, KC.RIGHT), KC.ENTER))
+        self.combo_module.combos.append(ArduxChord((KC.END, KC.UP, KC.PGDOWN), KC.ESCAPE))
+        self.combo_module.combos.append(ArduxChord((KC.RIGHT, KC.UP), KC.BSPACE))
+        self.combo_module.combos.append(ArduxChord((KC.UP, KC.LEFT), KC.DELETE))
+        self.combo_module.combos.append(ArduxChord((KC.END, KC.UP, KC.HOME, KC.PGDOWN), KC.TAB))
+        self.combo_module.combos.append(ArduxChord((KC.RIGHT, KC.DOWN, KC.LEFT, KC.PGDOWN), KC.SPACE))
+        self.combo_module.combos.append(ArduxChord((KC.RIGHT, KC.PGUP), KC.SK(KC.LCTRL)))
+        self.combo_module.combos.append(ArduxChord((KC.DOWN, KC.PGUP), KC.SK(KC.LGUI)))
+        self.combo_module.combos.append(ArduxChord((KC.LEFT, KC.PGUP), KC.SK(KC.LALT)))
+        self.combo_module.combos.append(ArduxChord((KC.RIGHT, KC.UP, KC.HOME, KC.PGUP), KC.SK(KC.LSHIFT)))
         
         #####
         # std - number
-        self.combo_module.combos.append(Chord((KC.N1, KC.N2), KC.N7))
-        self.combo_module.combos.append(Chord((KC.N2, KC.N3), KC.N8))
-        self.combo_module.combos.append(Chord((KC.N4, KC.N5), KC.N9))
-        self.combo_module.combos.append(Chord((KC.N5, KC.N6), KC.N0))
-        self.combo_module.combos.append(Chord((KC.N1, KC.N5), KC.DOT))
-        self.combo_module.combos.append(Chord((KC.N1, KC.N6), KC.COMMA))
-        self.combo_module.combos.append(Chord((KC.N1, KC.N4), KC.ENTER))
-        self.combo_module.combos.append(Chord((KC.N2, KC.N6), KC.DELETE))
-        self.combo_module.combos.append(Chord((KC.N4, KC.N2), KC.BSPACE))
+        self.combo_module.combos.append(ArduxChord((KC.N1, KC.N2), KC.N7))
+        self.combo_module.combos.append(ArduxChord((KC.N2, KC.N3), KC.N8))
+        self.combo_module.combos.append(ArduxChord((KC.N4, KC.N5), KC.N9))
+        self.combo_module.combos.append(ArduxChord((KC.N5, KC.N6), KC.N0))
+        self.combo_module.combos.append(ArduxChord((KC.N1, KC.N5), KC.DOT))
+        self.combo_module.combos.append(ArduxChord((KC.N1, KC.N6), KC.COMMA))
+        self.combo_module.combos.append(ArduxChord((KC.N1, KC.N4), KC.ENTER))
+        self.combo_module.combos.append(ArduxChord((KC.N2, KC.N6), KC.DELETE))
+        self.combo_module.combos.append(ArduxChord((KC.N4, KC.N2), KC.BSPACE))
         
         #####
         # std - mouse
-        self.combo_module.combos.append(Chord((KC.MB_RMB, KC.MS_DN, KC.MB_LMB), KC.TO(LAYER_ID_BASE)))
+        self.combo_module.combos.append(ArduxChord((KC.MB_RMB, KC.MS_DN, KC.MB_LMB), KC.TO(LAYER_ID_BASE)))
 
         # work around a bug with combo handling and layer selections in kmk
         #    these combos should be removed if/when kmk stops 'going hayware' or 'getting stuck' when these key combos are pressed when the below are not in the code
-        self.combo_module.combos.append(Chord((self.base_o_custom, KC.Y, self.base_e_symbols), KC.NO))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.R,  self.base_s_numbers), KC.NO))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.T), KC.NO))
-        self.combo_module.combos.append(Chord((self.base_o_custom, KC.T), KC.NO))
-        self.combo_module.combos.append(Chord((self.base_o_custom, self.base_s_numbers), KC.NO))
-        self.combo_module.combos.append(Chord((self.base_s_numbers, KC.Y), KC.NO))
+        self.combo_module.combos.append(ArduxChord((self.base_o_custom, KC.Y, self.base_e_symbols), KC.NO))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.R,  self.base_s_numbers), KC.NO))
+        self.combo_module.combos.append(ArduxChord((self.base_a_parens, KC.T), KC.NO))
+        self.combo_module.combos.append(ArduxChord((self.base_o_custom, KC.T), KC.NO))
+        self.combo_module.combos.append(ArduxChord((self.base_o_custom, self.base_s_numbers), KC.NO))
+        self.combo_module.combos.append(ArduxChord((self.base_s_numbers, KC.Y), KC.NO))

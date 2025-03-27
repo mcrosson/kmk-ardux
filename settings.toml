@@ -7,6 +7,9 @@ ARDUX_MCU = "[nice_nano|kb2040|sparkfun_promicro_rp2040]"
 # Bluetooth -- This is a core circuit python config
 #CIRCUITPY_BLE_NAME = "ARDUX [L|R] [board]" # The name of the device when pairing, etc
 
+# Tuning
+#ARDUX_COMBO_TIMEOUT = 175
+
 # RGB status indicator config
 #ARDUX_RGB_PIXEL_PIN = "NEOPIXEL" # This should be the board pin (ie. if board.GP14: use GP14)
 #ARDUX_RGB_NUM_LEDS = 1 # This is how many pixels total for non spilt OR nuber of pixels per half for splits
