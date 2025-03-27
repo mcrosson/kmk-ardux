@@ -4,24 +4,21 @@ import os
 from ardux import debug
 
 #####
+# import constants
+from ardux.constants import ARDUX_REMIX
+
+#####
 # Main keyboard object
 ardux_board = os.getenv('ARDUX_BOARD')
 ardux_keyboard = None
 
-# Get remix info
-ARDUX_REMIX = os.getenv('ARDUX_REMIX')
-if debug.enabled:
-    debug('Ardux remix: ', ARDUX_REMIX)
-
 # override defaults with remix data (if available)
 # given how trim the circuit python libs are... we are going to use exec
 # yes, this is not ideal
-ardux_board_custom = False
 if ARDUX_REMIX:
     try:
         exec('from remixes.%s.boards.%s import %s' % (ARDUX_REMIX, ardux_board, os.getenv('ARDUX_REMIX_KB_CLASS')))
         exec('ardux_keyboard = %s()' % (os.getenv('ARDUX_REMIX_KB_CLASS')))
-        ardux_board_custom = True
         if debug.enabled:
             debug('Using remix %s' % ARDUX_REMIX)
             debug('Using remixed keyboard class %s' % os.getenv('ARDUX_REMIX_KB_CLASS'))
@@ -29,7 +26,7 @@ if ARDUX_REMIX:
         pass
 
 # standard keyboard classes if not remixed
-if not ardux_board_custom:
+if not ARDUX_REMIX:
     if ardux_board == 'thepaintbrush':
         from boards.thepaintbrush import ThePaintbrushArduxKeyboard
         ardux_keyboard = ThePaintbrushArduxKeyboard()
