@@ -1,77 +1,82 @@
-print('START boot.py')
-
-# Used http://kmkfw.ioy/docs/boot/ as starting point
-
-import os
-
+##########
 # Print env vars if debugging enabled
-if os.getenv('ARDUX_KMK_DEBUGGING'):
-    print('debugging enabled')
+import os
+if bool(os.getenv('ARDUX_KMK_SHOW_ENV')):
     print('START env')
-    print('CIRCUITPY_BLE_NAME:', os.getenv('CIRCUITPY_BLE_NAME'))
-    print('ARDUX_KMK_DEBUGGING:', os.getenv('ARDUX_KMK_DEBUGGING'))
-    print('ARDUX_KMK_USB_DISK_ALWAYS:', os.getenv('ARDUX_KMK_USB_DISK_ALWAYS'))
-    print('ARDUX_SIZE:', os.getenv('ARDUX_SIZE'))
-    print('ARDUX_HAND:', os.getenv('ARDUX_HAND'))
-    print('ARDUX_BOARD:', os.getenv('ARDUX_BOARD'))
-    print('ARDUX_MCU:', os.getenv('ARDUX_MCU'))
+    print('SIZE:', os.getenv('ARDUX_SIZE'))
+    print('HAND:', os.getenv('ARDUX_HAND'))
+    print('BOARD:', os.getenv('ARDUX_BOARD'))
+    print('MCU:', os.getenv('ARDUX_MCU'))
+    print('BLE_NAME:', os.getenv('CIRCUITPY_BLE_NAME'))
+    print('RGB_PIXEL_PIN:', os.getenv('ARDUX_RGB_PIXEL_PIN'))
+    print('RGB_NUM_LEDS:', os.getenv('ARDUX_RGB_NUM_LEDS'))
+    print('RGB_BRIGHTNESS:', os.getenv('ARDUX_RGB_BRIGHTNESS'))
+    print('DISPLAY_DRIVER:', os.getenv('ARDUX_DISPLAY_DRIVER'))
+    print('DISPLAY_HEIGHT:', os.getenv('ARDUX_DISPLAY_HEIGHT'))
+    print('DISPLAY_WIDTH:', os.getenv('ARDUX_DISPLAY_WIDTH'))
+    print('REMIX:', os.getenv('ARDUX_REMIX'))
+    print('REMIX_KB_CLASS:', os.getenv('ARDUX_REMIX_KB_CLASS'))
+    print('DEBUGGING:', os.getenv('ARDUX_KMK_DEBUGGING'))
+    print('USB_DISK_ALWAYS:', os.getenv('ARDUX_KMK_USB_DISK_ALWAYS'))
     print('END env')
-else:
-    print('debugging disabled')
 
-# If this/these key(s) is/are held during boot, don't run the code which hides the storage and disables serial
-# bottom row, index finger key / bottom row pinky key
-import digitalio
-
-mcu = os.getenv('ARDUX_MCU')
-if 'kb2040' == mcu:
-    from kmk.quickpin.pro_micro.kb2040 import pinout as pins
-elif 'sparkfun_promicro_rp2040' == mcu:
-    from kmk.quickpin.pro_micro.sparkfun_promicro_rp2040 import pinout as pins
-elif 'nice_nano' == mcu:
-    from kmk.quickpin.pro_micro.nice_nano import pinout as pins
-else:
-    print('Unsupported mcu: ', os.getenv('ARDUX_MCU'))
-    raise NotImplementedError('Unsupported mcu:'+ os.getenv('ARDUX_MCU'))
+##########
+# various `settings.toml` validations
+if not os.getenv('ARDUX_SIZE'):
+    print('`ARDUX_SIZE` configuration is required')
+    raise NotImplementedError('`ARDUX_SIZE` configuration is required')
 
 if os.getenv('ARDUX_SIZE') not in ('STANDARD', 'BIG', '40%'):
-    print('Unsupported ardux size: ', os.getenv('ARDUX_SIZE'))
-    raise NotImplementedError('Unsupported ardux size:'+ os.getenv('ARDUX_SIZE'))
+    print('Unsupported `ARDUX_SIZE`:'+ os.getenv('ARDUX_SIZE'))
+    raise NotImplementedError('Unsupported `ARDUX_SIZE`:'+ os.getenv('ARDUX_SIZE'))
 
-if os.getenv('ARDUX_SIZE') == 'STANDARD' and os.getenv('ARDUX_BOARD') == 'crkbd':
-    print('The crkbd corne only supports "BIG" and "40%" ardux, please review your `settings.toml` config.')
-    raise NotImplementedError('The corne only supports "BIG" and "40%" ardux')
+if not os.getenv('ARDUX_HAND'):
+    print('`ARDUX_HAND` configuration is required')
+    raise NotImplementedError('`ARDUX_HAND` configuration is required')
 
-key_1 = digitalio.DigitalInOut(pins[12])
-key_2 = digitalio.DigitalInOut(pins[15])
+if os.getenv('ARDUX_HAND') not in ('LEFT', 'RIGHT'):
+    print('Unsupported `ARDUX_HAND`:'+ os.getenv('ARDUX_HAND'))
+    raise NotImplementedError('Unsupported `ARDUX_HAND`:'+ os.getenv('ARDUX_HAND'))
 
-# Configure gpio for boot
-key_1.switch_to_input(pull=digitalio.Pull.UP)
-key_2.switch_to_input(pull=digitalio.Pull.UP)
+if not os.getenv('ARDUX_BOARD'):
+    print('`ARDUX_BOARD` configuration is required')
+    raise NotImplementedError('`ARDUX_BOARD` configuration is required')
 
-# Pull up means 'active low' so invert pin values for less convoluted logic below
-key_1_val = not (key_1.value)
-key_2_val = not (key_2.value)
+if not os.getenv('ARDUX_MCU'):
+    print('`ARDUX_MCU` configuration is required')
+    raise NotImplementedError('`ARDUX_MCU` configuration is required')
 
-# Check for key hold and disable any dangerous features if not held
-if not (key_1_val or key_2_val) and not os.getenv('ARDUX_KMK_DEBUGGING'):
+if os.getenv('ARDUX_MCU') not in ('nice_nano', 'kb2040', 'sparkfun_promicro_rp2040'):
+    print('Unsupported `ARDUX_MCU`:'+ os.getenv('ARDUX_MCU'))
+    raise NotImplementedError('Unsupported `ARDUX_MCU`:'+ os.getenv('ARDUX_MCU'))
+
+if os.getenv('ARDUX_RGB_PIXEL_PIN') and not os.getenv('ARDUX_RGB_NUM_LEDS'):
+    print('`ARDUX_RGB_NUM_LEDS` must be set when `ARDUX_RGB_PIXEL_PIN` is set')
+    raise NotImplementedError('`ARDUX_RGB_NUM_LEDS` must be set when `ARDUX_RGB_PIXEL_PIN` is set')
+
+if os.getenv('ARDUX_DISPLAY_DRIVER') and not (os.getenv('ARDUX_DISPLAY_HEIGHT') and os.getenv('ARDUX_DISPLAY_WIDTH')):
+    print('`ARDUX_DISPLAY_HEIGHT` and `ARDUX_DISPLAY_WIDTH` must be set when `ARDUX_DISPLAY_DRIVER` is set')
+    raise NotImplementedError('`ARDUX_DISPLAY_HEIGHT` and `ARDUX_DISPLAY_WIDTH` must be set when `ARDUX_DISPLAY_DRIVER` is set')
+
+if os.getenv('ARDUX_REMIX') and not os.getenv('ARDUX_REMIX_KB_CLASS'):
+    print('`ARDUX_REMIX_KB_CLASS` must be set when `ARDUX_REMIX` is set')
+    raise NotImplementedError('`ARDUX_REMIX_KB_CLASS` must be set when `ARDUX_REMIX` is set')
+
+##########
+# early boot config
+if not bool(os.getenv('ARDUX_KMK_DEBUGGING')):
     # dont expose storage by default
-    if not os.getenv('ARDUX_KMK_USB_DISK_ALWAYS'):
+    if not bool(os.getenv('ARDUX_KMK_USB_DISK_ALWAYS')):
         import storage
         storage.disable_usb_drive()
+    
     # disable usb cdc stuff thats only useful when debugging
     import usb_cdc
     usb_cdc.disable() # Equivalent to usb_cdc.enable(console=False, data=False)
 
     # Enable use w/ bios when not debugging (serial device from debug messes things up)
-    # this only works if *both* cdc and storage are disabled above ; add added logic to avoid crash on boot
+    # this only works if *both* cdc and storage are disabled above
     import usb_hid
     from usb_hid import Device
-    if not os.getenv('ARDUX_KMK_USB_DISK_ALWAYS'):
+    if not bool(os.getenv('ARDUX_KMK_USB_DISK_ALWAYS')):
         usb_hid.enable((Device.KEYBOARD,), boot_device=1)
-
-# Deinit pins so they can be setup per the kmk keymap post-boot
-key_1.deinit()
-key_2.deinit()
-
-print('END boot.py')
