@@ -36,10 +36,6 @@ class _ArduxKeyboardStandard(KMKKeyboard):
         # Run main KMKKeyboard class init before doing any of our own customizations
         super().__init__()
         
-        # Enable debugging if appropriate
-        if os.getenv('ARDUX_KMK_DEBUGGING'):
-            self.debug_enabled = True
-
         # setup modules/extensions arrays
         self.modules = []
         self.extensions = []
