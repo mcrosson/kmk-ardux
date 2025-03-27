@@ -18,9 +18,10 @@ ARDUX_MCU = "[nice_nano|kb2040|sparkfun_promicro_rp2040]"
 #ARDUX_DISPLAY_WIDTH = 128
 
 # Remix Selection (See docs before uncommenting this line)
-# ARDUX_REMIX = "name_of_remix"
-# ARDUX_REMIX_KB_CLASS = "ThePaintbrushArduxKeyboardRemixedExample"
+#ARDUX_REMIX = "name_of_remix"
+#ARDUX_REMIX_KB_CLASS = "ThePaintbrushArduxKeyboardRemixedExample"
 
 # Debugging / development
 #ARDUX_KMK_DEBUGGING = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
 #ARDUX_KMK_USB_DISK_ALWAYS = 1 # Code only looks for value ; Uncomment/Comment to enable/disable
+#ARDUX_KMK_SHOW_ENV = 1 # Show env vars on boot -- may cause 'truncated output' in `boot_out.txt`
