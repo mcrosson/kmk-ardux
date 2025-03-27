@@ -44,16 +44,16 @@ class ArduxKeyboardCrkbdBase():
         else:
             if 'LEFT' == os.getenv('ARDUX_HAND'):
                 self.coord_mapping = [
-                    0,  1,  2,  3,  4,  5,
-                    6,  7,  8,  9, 10, 11,
-                    12, 13, 14, 15, 16, 17,
-                                21, 22, 23,
+                    1,  2,  3,  4,  5,
+                    7,  8,  9, 10, 11,
+                    13, 14, 15, 16, 17,
+                            21, 22, 23,
                 ]
             if 'RIGHT' == os.getenv('ARDUX_HAND'):
                 self.coord_mapping = [
-                    5,  4,  3, 2, 1, 0,
-                    11, 10, 9, 8, 7, 6,
-                    17, 16, 15, 14, 13, 12,
+                    5,  4,  3, 2, 1,
+                    11, 10, 9, 8, 7,
+                    17, 16, 15, 14, 13,
                     23, 22, 21,
                 ]
 
