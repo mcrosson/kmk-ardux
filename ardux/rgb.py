@@ -4,8 +4,32 @@ import board
 ardux_rgb_active = bool(os.getenv('ARDUX_RGB_PIXEL_PIN'))
 
 if ardux_rgb_active:
+    # color constants
+    HSV_BLUE = (170, 255, os.getenv('ARDUX_RGB_BRIGHTNESS', 255))
+    HSV_CYAN = (128, 255, os.getenv('ARDUX_RGB_BRIGHTNESS', 255))
+    HSV_PURPLE = (191, 255, os.getenv('ARDUX_RGB_BRIGHTNESS', 255))
+    HSV_ORANGE = (21, 255, os.getenv('ARDUX_RGB_BRIGHTNESS', 255))
+    HSV_RED = (0, 255, os.getenv('ARDUX_RGB_BRIGHTNESS', 255))
+    HSV_GREEN = (85, 255, os.getenv('ARDUX_RGB_BRIGHTNESS', 255))
+
+    # matching for rgb - this is the qmk logic
+    # base: blue
+    # 40p base: cyan
+    # numbers / symbols / paren / custom / big sym / 40p nav / 40p function: purple
+    # mouse / nav / big function: red
+    # latching keys (shift lock/caps): orange
+    color_map = [
+        HSV_BLUE,
+        HSV_PURPLE,
+        HSV_PURPLE,
+        HSV_RED,
+        HSV_PURPLE,
+        HSV_PURPLE,
+        HSV_RED,
+        HSV_ORANGE # latching keys @ end so can assume use of -1 for color index elsewhere
+    ]
+
     from kmk.extensions.RGB import RGB, AnimationModes
-    from ardux.constants import *
     rgb_ext = RGB(
         pixel_pin=eval('board.%s' % (os.getenv('ARDUX_RGB_PIXEL_PIN'))),
         num_pixels=os.getenv('ARDUX_RGB_NUM_LEDS'),
