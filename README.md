@@ -116,6 +116,14 @@ Please see our GitHub actions for information on how we compile both KMK and ard
 
 Note: we borrowed the main KMK compilation processes and code and adapted them for use with this repo.
 
+### Safe Boot
+
+This will disable running *any* code on the mcu and this will force the `CIRCUITPY` disk to show, even if there are bugs or config in the firmware that will prevent it from being enabled.
+
+1. Tap reset button right as mcu boots to disable running code
+1. USB disk should show up
+1. Update code / `settings.toml` as appropriate
+
 ### Misc Information
 
 - Format storage via `REPL`: https://docs.circuitpython.org/en/latest/docs/troubleshooting.html
