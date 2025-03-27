@@ -13,9 +13,7 @@ from kmk.extensions.media_keys import MediaKeys
 from ardux.constants import *
 from ardux.layers import ArduxLayers
 
-if os.getenv('ARDUX_DISPLAY_DRIVER'):
-    from ardux.oled import *
-
+from ardux.oled import *
 from ardux.rgb import *
 
 class _ArduxKeyboardStandard(KMKKeyboard):
@@ -82,8 +80,8 @@ class _ArduxKeyboardStandard(KMKKeyboard):
             self.extensions.append(rgb_ext)
 
         # Display, if enabled
-        if os.getenv('ARDUX_DISPLAY_DRIVER'):
-            self.extensions.append(display)
+        if ardux_display:
+            self.extensions.append(ardux_display)
 
     # Define keymap
     def setup_keymap(self):
