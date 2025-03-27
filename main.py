@@ -31,8 +31,12 @@ if not ARDUX_REMIX:
         from boards.thepaintbrush import ArduxKeyboardThePaintbrush
         ardux_keyboard = ArduxKeyboardThePaintbrush()
     elif ardux_board == 'crkbd': # corne
-        from boards.crkbd import ArduxKeyboardCrkbd
-        ardux_keyboard = ArduxKeyboardCrkbd()
+        if 'BIG' == os.getenv('ARDUX_SIZE'):
+            from boards.crkbd import ArduxKeyboardCrkbdBig
+            ardux_keyboard = ArduxKeyboardCrkbdBig()
+        else:
+            from boards.crkbd import ArduxKeyboardCrkbd40p
+            ardux_keyboard = ArduxKeyboardCrkbd40p()
     else:
         raise NotImplementedError('Please configure the proper keyboard in "settings.toml"')
 

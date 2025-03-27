@@ -1,6 +1,6 @@
-from ardux.kb.standard import _ArduxKeyboardStandard
+from ardux.kb.big import _ArduxKeyboardBig
 
-class _ArduxKeyboardBig(_ArduxKeyboardStandard):
+class _ArduxKeyboard40p(_ArduxKeyboardBig):
     coord_mapping = [
     ]
 

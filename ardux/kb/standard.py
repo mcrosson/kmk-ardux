@@ -45,7 +45,6 @@ class _ArduxKeyboardStandard(KMKKeyboard):
         self.combo_module = Combos()
         self.combo_module.prefer_hold = True
         self.combo_module.tap_interrupted = False
-        self.combo_module.timeout=250
         self.modules.append(self.combo_module)
 
         # HoldTap
