@@ -1,10 +1,10 @@
+import os
 import board
 
 from ardux.kb import _ArduxKeyboardStandard
 from kmk.scanners.keypad import KeysScanner
 from kmk.scanners import DiodeOrientation
 
-import os
 mcu = os.getenv('ARDUX_MCU')
 if 'kb2040' == mcu:
     from kmk.quickpin.pro_micro.kb2040 import pinout as pins
@@ -35,9 +35,6 @@ class CrkbdArduxKeyboard(_ArduxKeyboardStandard):
             pins[9],
         )
         self.diode_orientation = DiodeOrientation.COLUMNS
-        self.data_pin = pins[1]
-        self.rgb_pixel_pin = pins[0]
-        self.i2c = board.I2C
 
         self.coord_mapping = [
              0,  1,  2,  3,  4,  5,  29, 28, 27, 26, 25, 24,
