@@ -1,7 +1,7 @@
 import os
 import board
 
-from ardux.kb import _ArduxKeyboardStandard
+from ardux.kb.big import _ArduxKeyboardBig
 from kmk.scanners.keypad import KeysScanner
 from kmk.scanners import DiodeOrientation
 
@@ -17,7 +17,7 @@ else:
     raise NotImplementedError('Unsupported mcu:'+ os.getenv('ARDUX_MCU'))
 
 # crkbd Implementationa
-class CrkbdArduxKeyboard(_ArduxKeyboardStandard):
+class ArduxKeyboardCrkbd(_ArduxKeyboardBig):
     def setup_physical_config(self):
         # General board config & setup
         self.col_pins = (

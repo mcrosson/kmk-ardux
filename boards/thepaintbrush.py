@@ -1,6 +1,6 @@
 import os
 
-from ardux.kb import _ArduxKeyboardStandard
+from ardux.kb.standard import _ArduxKeyboardStandard
 from kmk.scanners.keypad import KeysScanner
 
 mcu = os.getenv('ARDUX_MCU')
@@ -14,7 +14,7 @@ else:
     print('Unsupported mcu: ', os.getenv('ARDUX_MCU'))
     raise NotImplementedError('Unsupported mcu:'+ os.getenv('ARDUX_MCU'))
 
-class ThePaintbrushArduxKeyboard(_ArduxKeyboardStandard):
+class ArduxKeyboardThePaintbrush(_ArduxKeyboardStandard):
     def setup_physical_config(self):
         self.matrix = KeysScanner(
             [pins[16], pins[17], pins[18], pins[19], 

@@ -28,11 +28,11 @@ if ARDUX_REMIX:
 # standard keyboard classes if not remixed
 if not ARDUX_REMIX:
     if ardux_board == 'thepaintbrush':
-        from boards.thepaintbrush import ThePaintbrushArduxKeyboard
-        ardux_keyboard = ThePaintbrushArduxKeyboard()
+        from boards.thepaintbrush import ArduxKeyboardThePaintbrush
+        ardux_keyboard = ArduxKeyboardThePaintbrush()
     elif ardux_board == 'crkbd': # corne
-        from boards.crkbd import CrkbdArduxKeyboard
-        ardux_keyboard = CrkbdArduxKeyboard()
+        from boards.crkbd import ArduxKeyboardCrkbd
+        ardux_keyboard = ArduxKeyboardCrkbd()
     else:
         raise NotImplementedError('Please configure the proper keyboard in "settings.toml"')
 
