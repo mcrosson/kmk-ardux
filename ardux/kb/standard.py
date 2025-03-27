@@ -17,13 +17,6 @@ from ardux.oled import *
 from ardux.rgb import *
 
 class _ArduxKeyboardStandard(KMKKeyboard):
-    coord_mapping = [
-        0,  1,  2,  3,
-        4,  5,  6,  7,
-    ]
-
-    keymap = []
-
     # Switch to ABC python3 stl abstract class methods
     #     See https://stackoverflow.com/a/4382964 for detail (the accepted answer)
     def setup_physical_config(self):
@@ -69,6 +62,9 @@ class _ArduxKeyboardStandard(KMKKeyboard):
         # Mouse Keys
         self.modules.append(MouseKeys())
 
+        # Setup layer toggles
+        self.setup_layer_toggles()
+
         # Setup kemap as last step
         self.setup_keymap()
 
@@ -83,12 +79,15 @@ class _ArduxKeyboardStandard(KMKKeyboard):
         if ardux_display:
             self.extensions.append(ardux_display)
 
-    # Define keymap
-    def setup_keymap(self):
+    # Define hold/tap layer toggles
+    def setup_layer_toggles(self):
         self.base_s_numbers = KC.LT(LAYER_ID_NUMBERS, KC.S)
         self.base_a_parens = KC.LT(LAYER_ID_PARENS, KC.A)
         self.base_o_custom = KC.LT(LAYER_ID_CUSTOM, KC.O)
         self.base_e_symbols = KC.LT(LAYER_ID_SYMBOLS, KC.E)
+
+    # Define keymap
+    def setup_keymap(self):
         self.keymap = [
             # std - left - base
             [self.base_s_numbers, KC.T, KC.R, self.base_a_parens,
@@ -120,81 +119,81 @@ class _ArduxKeyboardStandard(KMKKeyboard):
         #####
         # std - base
         # layers
-        self.combo_module.combos.append(Chord((KC.R, KC.I, self.base_e_symbols), KC.TO(LAYER_ID_NAVIGATION), timeout=150))
-        self.combo_module.combos.append(Chord((KC.T, KC.Y, self.base_a_parens), KC.TO(LAYER_ID_MOUSE), timeout=150))
+        self.combo_module.combos.append(Chord((KC.R, KC.I, self.base_e_symbols), KC.TO(LAYER_ID_NAVIGATION)))
+        self.combo_module.combos.append(Chord((KC.T, KC.Y, self.base_a_parens), KC.TO(LAYER_ID_MOUSE)))
         # mods
-        self.combo_module.combos.append(Chord((self.base_s_numbers, self.base_e_symbols), KC.SK(KC.LCTRL), timeout=100))
-        self.combo_module.combos.append(Chord((KC.Y, self.base_s_numbers), KC.SK(KC.LGUI), timeout=100))
-        self.combo_module.combos.append(Chord((KC.I, self.base_s_numbers), KC.SK(KC.LALT), timeout=100))
-        self.combo_module.combos.append(Chord((self.base_s_numbers, KC.R, KC.T, self.base_e_symbols), KC.SK(KC.LSHIFT), timeout=200))
+        self.combo_module.combos.append(Chord((self.base_s_numbers, self.base_e_symbols), KC.SK(KC.LCTRL)))
+        self.combo_module.combos.append(Chord((KC.Y, self.base_s_numbers), KC.SK(KC.LGUI)))
+        self.combo_module.combos.append(Chord((KC.I, self.base_s_numbers), KC.SK(KC.LALT)))
+        self.combo_module.combos.append(Chord((self.base_s_numbers, KC.R, KC.T, self.base_e_symbols), KC.SK(KC.LSHIFT)))
         # control sequences
-        self.combo_module.combos.append(Chord((self.base_o_custom, KC.I, KC.Y, self.base_e_symbols), KC.SPACE, timeout=200))
-        self.combo_module.combos.append(Chord((self.base_a_parens,  KC.R, self.base_o_custom), KC.ESCAPE, timeout=150))
-        self.combo_module.combos.append(Chord((self.base_e_symbols,  KC.R), KC.BSPACE, timeout=100))
-        self.combo_module.combos.append(Chord((KC.R,  KC.I), KC.DELETE, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_a_parens,  KC.R,  KC.T,  self.base_o_custom), KC.TAB, timeout=200))
+        self.combo_module.combos.append(Chord((self.base_o_custom, KC.I, KC.Y, self.base_e_symbols), KC.SPACE))
+        self.combo_module.combos.append(Chord((self.base_a_parens,  KC.R, self.base_o_custom), KC.ESCAPE,))
+        self.combo_module.combos.append(Chord((self.base_e_symbols,  KC.R), KC.BSPACE))
+        self.combo_module.combos.append(Chord((KC.R,  KC.I), KC.DELETE))
+        self.combo_module.combos.append(Chord((self.base_a_parens,  KC.R,  KC.T,  self.base_o_custom), KC.TAB))
         self.combo_module.combos.append(Chord((self.base_a_parens, self.base_e_symbols), KC.ENTER, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.Y, KC.I, self.base_o_custom), KC.CAPSLOCK, timeout=200))
+        self.combo_module.combos.append(Chord((self.base_a_parens, KC.Y, KC.I, self.base_o_custom), KC.CAPSLOCK))
         # symbols
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.Y), KC.DOT, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.I), KC.COMMA, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_a_parens, self.base_o_custom), KC.SLASH, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.Y, KC.I), KC.QUOTE, timeout=150))
+        self.combo_module.combos.append(Chord((self.base_a_parens, KC.Y), KC.DOT))
+        self.combo_module.combos.append(Chord((self.base_a_parens, KC.I), KC.COMMA))
+        self.combo_module.combos.append(Chord((self.base_a_parens, self.base_o_custom), KC.SLASH))
+        self.combo_module.combos.append(Chord((self.base_a_parens, KC.Y, KC.I), KC.QUOTE))
         # ansi
-        self.combo_module.combos.append(Chord((self.base_o_custom, self.base_e_symbols), KC.B, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_e_symbols,  KC.Y), KC.C, timeout=100))
-        self.combo_module.combos.append(Chord((KC.I,  self.base_o_custom), KC.N, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_a_parens,  KC.R), KC.F, timeout=100))
-        self.combo_module.combos.append(Chord((KC.R, KC.T), KC.G, timeout=100))
-        self.combo_module.combos.append(Chord((KC.Y, KC.I), KC.U, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_e_symbols, KC.I), KC.H, timeout=100))
-        self.combo_module.combos.append(Chord((KC.R, self.base_s_numbers), KC.V, timeout=100))
-        self.combo_module.combos.append(Chord((KC.T, self.base_s_numbers), KC.J, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_a_parens, self.base_s_numbers), KC.W, timeout=100))
-        self.combo_module.combos.append(Chord((KC.Y, self.base_o_custom), KC.K, timeout=100))
-        self.combo_module.combos.append(Chord((KC.Y, KC.I, self.base_o_custom), KC.M, timeout=150))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.R, KC.T), KC.D, timeout=150))
-        self.combo_module.combos.append(Chord((self.base_o_custom, KC.I, self.base_e_symbols), KC.P, timeout=150))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.T,  self.base_s_numbers), KC.Q, timeout=150))
-        self.combo_module.combos.append(Chord((KC.R, KC.T, self.base_s_numbers), KC.X, timeout=150))
-        self.combo_module.combos.append(Chord((KC.I, KC.Y, self.base_e_symbols), KC.L, timeout=150))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.R, KC.T, self.base_s_numbers), KC.Z, timeout=200))
+        self.combo_module.combos.append(Chord((self.base_o_custom, self.base_e_symbols), KC.B))
+        self.combo_module.combos.append(Chord((self.base_e_symbols,  KC.Y), KC.C))
+        self.combo_module.combos.append(Chord((KC.I,  self.base_o_custom), KC.N))
+        self.combo_module.combos.append(Chord((self.base_a_parens,  KC.R), KC.F))
+        self.combo_module.combos.append(Chord((KC.R, KC.T), KC.G))
+        self.combo_module.combos.append(Chord((KC.Y, KC.I), KC.U))
+        self.combo_module.combos.append(Chord((self.base_e_symbols, KC.I), KC.H))
+        self.combo_module.combos.append(Chord((KC.R, self.base_s_numbers), KC.V))
+        self.combo_module.combos.append(Chord((KC.T, self.base_s_numbers),KC.J))
+        self.combo_module.combos.append(Chord((self.base_a_parens, self.base_s_numbers), KC.W))
+        self.combo_module.combos.append(Chord((KC.Y, self.base_o_custom), KC.K))
+        self.combo_module.combos.append(Chord((KC.Y, KC.I, self.base_o_custom), KC.M))
+        self.combo_module.combos.append(Chord((self.base_a_parens, KC.R, KC.T), KC.D))
+        self.combo_module.combos.append(Chord((self.base_o_custom, KC.I, self.base_e_symbols), KC.P))
+        self.combo_module.combos.append(Chord((self.base_a_parens, KC.T,  self.base_s_numbers), KC.Q))
+        self.combo_module.combos.append(Chord((KC.R, KC.T, self.base_s_numbers), KC.X))
+        self.combo_module.combos.append(Chord((KC.I, KC.Y, self.base_e_symbols), KC.L))
+        self.combo_module.combos.append(Chord((self.base_a_parens, KC.R, KC.T, self.base_s_numbers), KC.Z))
         
         #####
         # std - nav
-        self.combo_module.combos.append(Chord((KC.UP, KC.LEFT, KC.RIGHT), KC.TO(LAYER_ID_BASE), timeout=150))
-        self.combo_module.combos.append(Chord((KC.END, KC.RIGHT), KC.ENTER, timeout=100))
-        self.combo_module.combos.append(Chord((KC.END, KC.UP, KC.PGDOWN), KC.ESCAPE, timeout=150))
-        self.combo_module.combos.append(Chord((KC.RIGHT, KC.UP), KC.BSPACE, timeout=100))
-        self.combo_module.combos.append(Chord((KC.UP, KC.LEFT), KC.DELETE, timeout=100))
-        self.combo_module.combos.append(Chord((KC.END, KC.UP, KC.HOME, KC.PGDOWN), KC.TAB, timeout=2000))
-        self.combo_module.combos.append(Chord((KC.RIGHT, KC.DOWN, KC.LEFT, KC.PGDOWN), KC.SPACE, timeout=200))
-        self.combo_module.combos.append(Chord((KC.RIGHT, KC.PGUP), KC.SK(KC.LCTRL), timeout=100))
-        self.combo_module.combos.append(Chord((KC.DOWN, KC.PGUP), KC.SK(KC.LGUI), timeout=100))
-        self.combo_module.combos.append(Chord((KC.LEFT, KC.PGUP), KC.SK(KC.LALT), timeout=100))
-        self.combo_module.combos.append(Chord((KC.RIGHT, KC.UP, KC.HOME, KC.PGUP), KC.SK(KC.LSHIFT), timeout=200))
+        self.combo_module.combos.append(Chord((KC.UP, KC.LEFT, KC.RIGHT), KC.TO(LAYER_ID_BASE)))
+        self.combo_module.combos.append(Chord((KC.END, KC.RIGHT), KC.ENTER))
+        self.combo_module.combos.append(Chord((KC.END, KC.UP, KC.PGDOWN), KC.ESCAPE))
+        self.combo_module.combos.append(Chord((KC.RIGHT, KC.UP), KC.BSPACE))
+        self.combo_module.combos.append(Chord((KC.UP, KC.LEFT), KC.DELETE))
+        self.combo_module.combos.append(Chord((KC.END, KC.UP, KC.HOME, KC.PGDOWN), KC.TAB))
+        self.combo_module.combos.append(Chord((KC.RIGHT, KC.DOWN, KC.LEFT, KC.PGDOWN), KC.SPACE))
+        self.combo_module.combos.append(Chord((KC.RIGHT, KC.PGUP), KC.SK(KC.LCTRL)))
+        self.combo_module.combos.append(Chord((KC.DOWN, KC.PGUP), KC.SK(KC.LGUI)))
+        self.combo_module.combos.append(Chord((KC.LEFT, KC.PGUP), KC.SK(KC.LALT)))
+        self.combo_module.combos.append(Chord((KC.RIGHT, KC.UP, KC.HOME, KC.PGUP), KC.SK(KC.LSHIFT)))
         
         #####
         # std - number
-        self.combo_module.combos.append(Chord((KC.N1, KC.N2), KC.N7, timeout=100))
-        self.combo_module.combos.append(Chord((KC.N2, KC.N3), KC.N8, timeout=100))
-        self.combo_module.combos.append(Chord((KC.N4, KC.N5), KC.N9, timeout=100))
-        self.combo_module.combos.append(Chord((KC.N5, KC.N6), KC.N0, timeout=100))
-        self.combo_module.combos.append(Chord((KC.N1, KC.N5), KC.DOT, timeout=100))
-        self.combo_module.combos.append(Chord((KC.N1, KC.N6), KC.COMMA, timeout=100))
-        self.combo_module.combos.append(Chord((KC.N1, KC.N4), KC.ENTER, timeout=100))
-        self.combo_module.combos.append(Chord((KC.N2, KC.N6), KC.DELETE, timeout=100))
-        self.combo_module.combos.append(Chord((KC.N4, KC.N2), KC.BSPACE, timeout=100))
+        self.combo_module.combos.append(Chord((KC.N1, KC.N2), KC.N7))
+        self.combo_module.combos.append(Chord((KC.N2, KC.N3), KC.N8))
+        self.combo_module.combos.append(Chord((KC.N4, KC.N5), KC.N9))
+        self.combo_module.combos.append(Chord((KC.N5, KC.N6), KC.N0))
+        self.combo_module.combos.append(Chord((KC.N1, KC.N5), KC.DOT))
+        self.combo_module.combos.append(Chord((KC.N1, KC.N6), KC.COMMA))
+        self.combo_module.combos.append(Chord((KC.N1, KC.N4), KC.ENTER))
+        self.combo_module.combos.append(Chord((KC.N2, KC.N6), KC.DELETE))
+        self.combo_module.combos.append(Chord((KC.N4, KC.N2), KC.BSPACE))
         
         #####
         # std - mouse
-        self.combo_module.combos.append(Chord((KC.MB_RMB, KC.MS_DN, KC.MB_LMB), KC.TO(LAYER_ID_BASE), timeout=150))
+        self.combo_module.combos.append(Chord((KC.MB_RMB, KC.MS_DN, KC.MB_LMB), KC.TO(LAYER_ID_BASE)))
 
         # work around a bug with combo handling and layer selections in kmk
         #    these combos should be removed if/when kmk stops 'going hayware' or 'getting stuck' when these key combos are pressed when the below are not in the code
-        self.combo_module.combos.append(Chord((self.base_o_custom, KC.Y, self.base_e_symbols), KC.NO, timeout=150))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.R,  self.base_s_numbers), KC.NO, timeout=150))
-        self.combo_module.combos.append(Chord((self.base_a_parens, KC.T), KC.NO, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_o_custom, KC.T), KC.NO, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_o_custom, self.base_s_numbers), KC.NO, timeout=100))
-        self.combo_module.combos.append(Chord((self.base_s_numbers, KC.Y), KC.NO, timeout=100))
+        self.combo_module.combos.append(Chord((self.base_o_custom, KC.Y, self.base_e_symbols), KC.NO))
+        self.combo_module.combos.append(Chord((self.base_a_parens, KC.R,  self.base_s_numbers), KC.NO))
+        self.combo_module.combos.append(Chord((self.base_a_parens, KC.T), KC.NO))
+        self.combo_module.combos.append(Chord((self.base_o_custom, KC.T), KC.NO))
+        self.combo_module.combos.append(Chord((self.base_o_custom, self.base_s_numbers), KC.NO))
+        self.combo_module.combos.append(Chord((self.base_s_numbers, KC.Y), KC.NO))

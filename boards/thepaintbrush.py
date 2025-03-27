@@ -21,3 +21,8 @@ class ArduxKeyboardThePaintbrush(_ArduxKeyboardStandard):
                 pins[12], pins[13], pins[14], pins[15]],
             value_when_pressed=False
         )
+
+        self.coord_mapping = [
+            0,  1,  2,  3,
+            4,  5,  6,  7,
+        ]
